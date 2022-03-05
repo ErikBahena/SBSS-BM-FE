@@ -22,6 +22,8 @@ export const access = (userInfo, successCallback, type, setErrors) => {
         const type = err.response.data.type;
         const message = err.response.data.message;
 
+        console.error(err.response.data);
+
         setErrors({ [type]: message });
         dispatch(fetchError());
       });

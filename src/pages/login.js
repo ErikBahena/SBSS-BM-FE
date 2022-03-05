@@ -8,19 +8,17 @@ import { access } from "src/actions";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Button, Container, Grid, Link, TextField, Typography } from "@mui/material";
 import { Facebook as FacebookIcon } from "../icons/facebook";
 import { Google as GoogleIcon } from "../icons/google";
 
-const Login = ({ dispatch, isLoading }) => {
+const SignIn = ({ dispatch, isLoading }) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: "test@gmail.com",
-      password: "tet",
+      email: "guest@gmail.com",
+      password: "guest",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
@@ -34,7 +32,7 @@ const Login = ({ dispatch, isLoading }) => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Sign In</title>
       </Head>
       <Box
         component="main"
@@ -46,11 +44,6 @@ const Login = ({ dispatch, isLoading }) => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink href="/" passHref>
-            <Button component="a" startIcon={<ArrowBackIcon fontSize="small" />}>
-              Dashboard
-            </Button>
-          </NextLink>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color="textPrimary" variant="h4">
@@ -159,4 +152,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.isLoading,
 });
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(SignIn);

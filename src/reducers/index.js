@@ -31,7 +31,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: action.payload,
       };
     case SET_ERROR:
       return {

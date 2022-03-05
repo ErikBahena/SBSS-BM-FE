@@ -7,16 +7,24 @@ export const FETCH_ERROR = "FETCH_ERROR";
 export const SET_ERROR = "SET_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 
-export const access = (userInfo, callback, type) => {
+export const access = (userInfo, successCallback, type, setErrors) => {
   return async (dispatch) => {
     dispatch(fetchStart());
+
     axios
       .post(`http://localhost:8080/api/auth/${type}`, userInfo)
       .then((res) => {
         dispatch(loginSuccess(res.data));
-        callback ? callback() : null;
+
+        if (successCallback) successCallback();
       })
-      .catch((err) => dispatch(fetchError(err.response.data.message)));
+      .catch((err) => {
+        const type = err.response.data.type;
+        const message = err.response.data.message;
+
+        setErrors({ [type]: message });
+        dispatch(fetchError());
+      });
   };
 };
 
@@ -40,10 +48,9 @@ export const fetchSuccess = (invoices) => {
   };
 };
 
-export const fetchError = (errorMessage) => {
+export const fetchError = () => {
   return {
     type: FETCH_ERROR,
-    payload: errorMessage,
   };
 };
 

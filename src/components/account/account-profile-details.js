@@ -6,16 +6,7 @@ import { updateUser } from "src/actions";
 
 import * as Yup from "yup";
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Divider, Grid, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 const AccountProfileDetails = ({ user, dispatch, isLoading }) => {

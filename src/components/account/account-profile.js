@@ -37,9 +37,7 @@ const AccountProfile = ({ user }) => (
           {capitalizeName(`${user.first_name} ${user.last_name}`)}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {user.address.city &&
-            user.address.country &&
-            `${user.address?.city}, ${user.address?.country}`}
+          {user.address?.city && `${user.address?.city}, ${user.address?.country}`}
         </Typography>
         {/* <Typography color="textSecondary" variant="body2">
           {new Date().getFullYear}

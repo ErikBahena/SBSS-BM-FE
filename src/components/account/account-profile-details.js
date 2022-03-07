@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { useFormik } from "formik";
 import { phoneRegExp } from "src/utils/regexExpressions";
 import { states } from "../../__mocks__/states";
+import { updateUser } from "src/actions";
 
 import * as Yup from "yup";
 
@@ -15,8 +16,9 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
-const AccountProfileDetails = ({ user, dispatch }) => {
+const AccountProfileDetails = ({ user, dispatch, isLoading }) => {
   const formik = useFormik({
     initialValues: {
       first_name: user.first_name,
@@ -41,9 +43,7 @@ const AccountProfileDetails = ({ user, dispatch }) => {
       phone: Yup.string().matches(phoneRegExp, "invalid phone number").required("can't be blank"),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      // dispatch(access(formValues, () => router.push("/"), "login", setErrors));
-
-      console.log(formValues);
+      dispatch(updateUser(formValues, () => console.log("ss called"), setErrors));
     },
   });
 
@@ -200,9 +200,15 @@ const AccountProfileDetails = ({ user, dispatch }) => {
             p: 2,
           }}
         >
-          <Button color="primary" variant="contained" type="submit" disabled={!formik.isValid}>
+          <LoadingButton
+            color="primary"
+            variant="contained"
+            type="submit"
+            disabled={!formik.isValid}
+            loading={isLoading}
+          >
             Save Details
-          </Button>
+          </LoadingButton>
         </Box>
       </Card>
     </form>
@@ -211,6 +217,7 @@ const AccountProfileDetails = ({ user, dispatch }) => {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  isLoading: state.isLoading,
 });
 
 export default connect(mapStateToProps)(AccountProfileDetails);

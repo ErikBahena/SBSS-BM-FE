@@ -24,11 +24,11 @@ const AccountProfile = ({ user }) => (
         }}
       >
         <Avatar
-          src={user && user.photo_url}
+          src={user.photo_url}
           sx={{
-            height: 64,
+            height: 75,
             mb: 2,
-            width: 64,
+            width: 75,
           }}
         >
           {getInitials(`${user.first_name} ${user.last_name}`)}

@@ -1,4 +1,11 @@
-import { FETCH_START, FETCH_ERROR, FETCH_SUCCESS, SET_ERROR, LOGIN_SUCCESS } from "../actions";
+import {
+  FETCH_START,
+  FETCH_ERROR,
+  FETCH_SUCCESS,
+  SET_ERROR,
+  LOGIN_SUCCESS,
+  UPDATE_USER_SUCCESS,
+} from "../actions";
 
 export const initialState = {
   isLoading: false,
@@ -10,6 +17,13 @@ const reducer = (state = initialState, action) => {
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
 
+      return {
+        ...state,
+        user: { ...action.payload },
+        isLoading: false,
+        errorMessage: "",
+      };
+    case UPDATE_USER_SUCCESS:
       return {
         ...state,
         user: { ...action.payload },

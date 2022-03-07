@@ -6,6 +6,7 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const SET_ERROR = "SET_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 
 export const access = (userInfo, successCallback, type, setErrors) => {
   return async (dispatch) => {
@@ -30,7 +31,22 @@ export const access = (userInfo, successCallback, type, setErrors) => {
   };
 };
 
-export const updateUserAccount = (userInfo, successCallback, setErrors) => {};
+export const updateUser = (updatedInfo, successCallback, setErrors) => {
+  return async (dispatch, getState) => {
+    const { user } = getState();
+
+    dispatch(fetchStart());
+
+    axiosWithAuth()
+      .put(`/user/${user.user_id}/${user.address.user_address_id}`, updatedInfo)
+      .then((res) => {
+        // // if (successCallback) successCallback();
+
+        dispatch(updateUserSuccess(res.data));
+      })
+      .catch((err) => console.log(err.response));
+  };
+};
 
 export const fetchStart = () => {
   return {
@@ -41,6 +57,12 @@ export const fetchStart = () => {
 export const loginSuccess = (userInfo) => {
   return {
     type: LOGIN_SUCCESS,
+    payload: userInfo,
+  };
+};
+export const updateUserSuccess = (userInfo) => {
+  return {
+    type: UPDATE_USER_SUCCESS,
     payload: userInfo,
   };
 };

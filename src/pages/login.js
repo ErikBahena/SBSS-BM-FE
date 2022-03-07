@@ -18,7 +18,7 @@ const SignIn = ({ dispatch, isLoading }) => {
   const formik = useFormik({
     initialValues: {
       email: "guest@gmail.com",
-      password: "guest",
+      password: "guestPassword!!221",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
@@ -119,6 +119,7 @@ const SignIn = ({ dispatch, isLoading }) => {
               <LoadingButton
                 color="primary"
                 loading={isLoading}
+                disabled={!formik.isValid}
                 fullWidth
                 size="large"
                 type="submit"

@@ -6,66 +6,54 @@ import {
   CardActions,
   CardContent,
   Divider,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
-};
+import { connect } from "react-redux";
+import { getInitials } from "src/utils/get-initials";
+import { capitalizeName } from "src/utils/capitalize-name";
 
-export const AccountProfile = (props) => (
-  <Card {...props}>
+const AccountProfile = ({ user }) => (
+  <Card>
     <CardContent>
       <Box
         sx={{
-          alignItems: 'center',
-          display: 'flex',
-          flexDirection: 'column'
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={user.photo_url}
           sx={{
-            height: 64,
+            height: 75,
             mb: 2,
-            width: 64
+            width: 75,
           }}
-        />
-        <Typography
-          color="textPrimary"
-          gutterBottom
-          variant="h5"
         >
-          {user.name}
+          {getInitials(`${user.first_name} ${user.last_name}`)}
+        </Avatar>
+        <Typography color="textPrimary" gutterBottom variant="h5">
+          {capitalizeName(`${user.first_name} ${user.last_name}`)}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {`${user.city} ${user.country}`}
+        <Typography color="textSecondary" variant="body2">
+          {user.address?.city && `${user.address?.city}, ${user.address?.country}`}
         </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.timezone}
-        </Typography>
+        {/* <Typography color="textSecondary" variant="body2">
+          {new Date().getFullYear}
+        </Typography> */}
       </Box>
     </CardContent>
     <Divider />
     <CardActions>
-      <Button
-        color="primary"
-        fullWidth
-        variant="text"
-      >
+      <Button color="primary" fullWidth variant="text">
         Upload picture
       </Button>
     </CardActions>
   </Card>
 );
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(AccountProfile);

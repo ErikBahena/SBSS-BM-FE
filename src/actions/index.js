@@ -30,6 +30,8 @@ export const access = (userInfo, successCallback, type, setErrors) => {
   };
 };
 
+export const updateUserAccount = (userInfo, successCallback, setErrors) => {};
+
 export const fetchStart = () => {
   return {
     type: FETCH_START,

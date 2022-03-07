@@ -17,8 +17,8 @@ const SignIn = ({ dispatch, isLoading }) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: "guest@gmail.com",
-      password: "guest",
+      email: "erikjbahena@gmail.com",
+      password: "erik",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),

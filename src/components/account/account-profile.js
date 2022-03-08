@@ -45,11 +45,11 @@ const AccountProfile = ({ user }) => (
       </Box>
     </CardContent>
     <Divider />
-    <CardActions>
+    {/* <CardActions>
       <Button color="primary" fullWidth variant="text">
         Upload picture
       </Button>
-    </CardActions>
+    </CardActions> */}
   </Card>
 );
 const mapStateToProps = (state) => ({

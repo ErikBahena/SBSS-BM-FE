@@ -9,10 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { Search as SearchIcon } from "../../icons/search";
-import { Upload as UploadIcon } from "../../icons/upload";
 
-export const CustomerListToolbar = (props) => (
-  <Box {...props}>
+export const ClientListToolbar = ({}) => (
+  <Box>
     <Box
       sx={{
         alignItems: "center",
@@ -23,11 +22,11 @@ export const CustomerListToolbar = (props) => (
       }}
     >
       <Typography sx={{ m: 1 }} variant="h4">
-        Customers
+        Clients
       </Typography>
       <Box sx={{ m: 1 }}>
         <Button color="primary" variant="contained">
-          Add Customer
+          Add Client
         </Button>
       </Box>
     </Box>
@@ -46,7 +45,7 @@ export const CustomerListToolbar = (props) => (
                   </InputAdornment>
                 ),
               }}
-              placeholder="Search customer"
+              placeholder="Search client"
               variant="outlined"
             />
           </Box>

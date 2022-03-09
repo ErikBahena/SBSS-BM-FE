@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useSearch } from "src/hooks";
+import { clientSearchKeys } from "src/utils/fuzzy-search-keys";
 
 import { connect } from "react-redux";
 import { getUserClients } from "src/fetch-functions";
@@ -15,7 +17,9 @@ import { DashboardLayout } from "../components/dashboard-layout";
 const Customers = ({ userId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { status, data: userClients, refetch } = useQuery("clients", () => getUserClients(userId));
+  const { status, data, refetch } = useQuery("clients", () => getUserClients(userId));
+
+  const [orderedClients, handleSearch, searchTerm] = useSearch("", data, clientSearchKeys);
 
   return (
     <>
@@ -48,9 +52,14 @@ const Customers = ({ userId }) => {
                   refetch={refetch}
                 />
               )}
-              <ClientListToolbar setAnchorEl={setAnchorEl} />
+              <ClientListToolbar
+                searchTerm={searchTerm}
+                handleSearch={handleSearch}
+                data={data}
+                setAnchorEl={setAnchorEl}
+              />
               <Box sx={{ mt: 3 }}>
-                <ClientListResults clients={userClients} />
+                <ClientListResults clients={orderedClients} />
               </Box>
             </>
           )}

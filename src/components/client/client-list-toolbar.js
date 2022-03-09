@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Search as SearchIcon } from "../../icons/search";
 
-export const ClientListToolbar = ({ setAnchorEl }) => (
+export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm, data }) => (
   <Box>
     <Box
       sx={{
@@ -47,6 +47,8 @@ export const ClientListToolbar = ({ setAnchorEl }) => (
               }}
               placeholder="Search client"
               variant="outlined"
+              onChange={(e) => handleSearch(e.target.value, data)}
+              value={searchTerm}
             />
           </Box>
         </CardContent>

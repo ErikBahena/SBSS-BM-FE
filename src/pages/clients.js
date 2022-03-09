@@ -1,21 +1,24 @@
-import { useEffect } from "react";
 import Head from "next/head";
+import { useState } from "react";
+import { useQuery } from "react-query";
 
 import { connect } from "react-redux";
-import { getUserClients } from "src/actions";
+import { getUserClients } from "src/fetch-functions";
 
 import { Box, Container, Skeleton, Stack } from "@mui/material";
 
+import AddClientPopover from "src/components/client/add-client-popover";
 import { ClientListResults } from "../components/client/client-list-results";
 import { ClientListToolbar } from "../components/client/client-list-toolbar";
 import { DashboardLayout } from "../components/dashboard-layout";
 
-const Customers = ({ userClients, dispatch, isLoading }) => {
-  useEffect(() => dispatch(getUserClients()), []);
+const Customers = ({ userId }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const { status, data: userClients } = useQuery("clients", () => getUserClients(userId));
 
   return (
     <>
-      {console.log(isLoading, userClients)}
       <Head>
         <title>Customers</title>
       </Head>
@@ -27,20 +30,31 @@ const Customers = ({ userClients, dispatch, isLoading }) => {
         }}
       >
         <Container maxWidth={false}>
-          <ClientListToolbar />
-          {isLoading ? (
-            <Stack spacing={1} sx={{ mt: 3 }}>
+          {status === "loading" && (
+            <Stack spacing={1}>
               <Skeleton variant="rectangular" width={"auto"} height={50} />
-              <Skeleton variant="rectangular" width={"auto"} height={200} />
-              <Skeleton variant="rectangular" width={"auto"} height={50} />
+              <Skeleton variant="rectangular" width={"auto"} height={100} />
+              <Skeleton variant="rectangular" width={"auto"} height={250} />
             </Stack>
-          ) : (
+          )}
+
+          {status === "success" && (
             <>
+              {Boolean(anchorEl) && (
+                <AddClientPopover
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  setAnchorEl={setAnchorEl}
+                />
+              )}
+              <ClientListToolbar setAnchorEl={setAnchorEl} />
               <Box sx={{ mt: 3 }}>
                 <ClientListResults clients={userClients} />
               </Box>
             </>
           )}
+
+          {status === "error" && <h2>Error</h2>}
         </Container>
       </Box>
     </>
@@ -50,8 +64,7 @@ const Customers = ({ userClients, dispatch, isLoading }) => {
 Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 const mapStateToProps = (state) => ({
-  userClients: state.userClients,
-  isLoading: state.isLoading,
+  userId: state.user.user_id,
 });
 
 export default connect(mapStateToProps)(Customers);

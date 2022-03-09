@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Search as SearchIcon } from "../../icons/search";
 
-export const ClientListToolbar = ({}) => (
+export const ClientListToolbar = ({ setAnchorEl }) => (
   <Box>
     <Box
       sx={{
@@ -25,7 +25,7 @@ export const ClientListToolbar = ({}) => (
         Clients
       </Typography>
       <Box sx={{ m: 1 }}>
-        <Button color="primary" variant="contained">
+        <Button onClick={(e) => setAnchorEl(e.target)} color="primary" variant="contained">
           Add Client
         </Button>
       </Box>

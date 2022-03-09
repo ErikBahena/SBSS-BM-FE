@@ -1,8 +1,13 @@
 import { useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
+import { connect } from "react-redux";
+
 import { phoneRegExp } from "src/utils/regexExpressions";
 import { states } from "../../__mocks__/states";
 
 import * as Yup from "yup";
+
+import { addClient } from "src/fetch-functions";
 
 import {
   Popover,
@@ -17,18 +22,19 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+const AddClientPopover = ({ anchorEl, open, setAnchorEl, userId, refetch }) => {
+  const queryClient = useQueryClient();
 
-const AddClientPopover = ({ anchorEl, open, setAnchorEl }) => {
+  const { mutate, isLoading } = useMutation(addClient, {
+    onSuccess: () => {
+      refetch();
+      setAnchorEl(null);
+    },
+    onError: () => {
+      alert("there was an error");
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
       first_name: "",
@@ -55,8 +61,9 @@ const AddClientPopover = ({ anchorEl, open, setAnchorEl }) => {
       state: Yup.mixed().notOneOf(["default"]).required("you must select a state "),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      console.log(formValues);
-      // dispatch(updateUser(formValues, () => console.log("ss called"), setErrors));
+      formValues.user_id = userId;
+
+      mutate(formValues);
     },
   });
 
@@ -231,7 +238,7 @@ const AddClientPopover = ({ anchorEl, open, setAnchorEl }) => {
               variant="contained"
               type="submit"
               disabled={!formik.isValid}
-              loading={false}
+              loading={isLoading}
             >
               Save Details
             </LoadingButton>
@@ -242,4 +249,8 @@ const AddClientPopover = ({ anchorEl, open, setAnchorEl }) => {
   );
 };
 
-export default AddClientPopover;
+const mapStateToProps = (state) => ({
+  userId: state.user.user_id,
+});
+
+export default connect(mapStateToProps)(AddClientPopover);

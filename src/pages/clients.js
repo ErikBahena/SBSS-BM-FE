@@ -15,7 +15,7 @@ import { DashboardLayout } from "../components/dashboard-layout";
 const Customers = ({ userId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { status, data: userClients } = useQuery("clients", () => getUserClients(userId));
+  const { status, data: userClients, refetch } = useQuery("clients", () => getUserClients(userId));
 
   return (
     <>
@@ -45,6 +45,7 @@ const Customers = ({ userId }) => {
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   setAnchorEl={setAnchorEl}
+                  refetch={refetch}
                 />
               )}
               <ClientListToolbar setAnchorEl={setAnchorEl} />

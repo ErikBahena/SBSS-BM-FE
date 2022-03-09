@@ -5,3 +5,9 @@ export const getUserClients = async (user_id) => {
 
   return data;
 };
+
+export const addClient = async (newClient) => {
+  const { data } = await axiosWithAuth().post(`/client/add`, newClient);
+
+  return data;
+};

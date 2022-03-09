@@ -33,7 +33,7 @@ const Customers = ({ userId }) => {
           {status === "loading" && (
             <Stack spacing={1}>
               <Skeleton variant="rectangular" width={"auto"} height={50} />
-              <Skeleton variant="rectangular" width={"auto"} height={100} />
+              <Skeleton variant="rectangular" width={"auto"} height={130} />
               <Skeleton variant="rectangular" width={"auto"} height={250} />
             </Stack>
           )}

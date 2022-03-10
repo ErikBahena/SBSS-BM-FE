@@ -5,13 +5,11 @@ import {
   SET_ERROR,
   LOGIN_SUCCESS,
   UPDATE_USER_SUCCESS,
-  GET_USER_CLIENTS_SUCCESS,
 } from "../actions";
 
 export const initialState = {
   isLoading: false,
   errorMessage: "",
-  userClients: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,13 +27,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: { ...action.payload },
-        isLoading: false,
-        errorMessage: "",
-      };
-    case GET_USER_CLIENTS_SUCCESS:
-      return {
-        ...state,
-        userClients: action.payload,
         isLoading: false,
         errorMessage: "",
       };

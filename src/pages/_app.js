@@ -14,6 +14,12 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import reducer from "../reducers";
 
+// react query
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
+
 const store = createStore(reducer, applyMiddleware(thunk));
 
 const App = (props) => {
@@ -30,7 +36,10 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+          <QueryClientProvider client={queryClient}>
+            <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

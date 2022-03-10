@@ -142,7 +142,7 @@ export const ClientListResults = ({ clients }) => {
           />
         </Card>
       )}
-      {!clients.length && (
+      {!clients && (
         <Card sx={{ maxWidth: 325 }}>
           <CardActionArea>
             <CardMedia

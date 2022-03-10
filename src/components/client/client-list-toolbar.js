@@ -8,9 +8,10 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
+import { capitalizeFirstLetter } from "src/utils/letter-utils";
 import { Search as SearchIcon } from "../../icons/search";
 
-export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm }) => (
+export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm, type }) => (
   <Box>
     <Box
       sx={{
@@ -22,11 +23,11 @@ export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm }) => 
       }}
     >
       <Typography sx={{ m: 1 }} variant="h4">
-        Clients
+        {capitalizeFirstLetter(type)}s
       </Typography>
       <Box sx={{ m: 1 }}>
         <Button onClick={(e) => setAnchorEl(e.target)} color="primary" variant="contained">
-          Add Client
+          Add {capitalizeFirstLetter(type)}
         </Button>
       </Box>
     </Box>
@@ -45,7 +46,7 @@ export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm }) => 
                   </InputAdornment>
                 ),
               }}
-              placeholder="Search client"
+              placeholder={`Search ${type}`}
               variant="outlined"
               onChange={(e) => handleSearch(e.target.value)}
               value={searchTerm}

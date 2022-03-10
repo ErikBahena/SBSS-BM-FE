@@ -1,13 +1,11 @@
 import { useFormik } from "formik";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { connect } from "react-redux";
 
 import { phoneRegExp } from "src/utils/regexExpressions";
 import { states } from "../../__mocks__/states";
 
 import * as Yup from "yup";
-
-import { addClient } from "src/fetch-functions";
 
 import {
   Popover,
@@ -21,11 +19,19 @@ import {
   Box,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
-const AddClientPopover = ({ anchorEl, open, setAnchorEl, userId, refetch }) => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useMutation(addClient, {
+const AddClientPopover = ({
+  anchorEl,
+  open,
+  setAnchorEl,
+  userId,
+  refetch,
+  addResourceFunc,
+  type,
+  title,
+}) => {
+  const { mutate, isLoading } = useMutation(addResourceFunc, {
     onSuccess: () => {
       refetch();
       setAnchorEl(null);
@@ -86,8 +92,8 @@ const AddClientPopover = ({ anchorEl, open, setAnchorEl, userId, refetch }) => {
       <form onSubmit={formik.handleSubmit} autoComplete="false" autoCorrect="false">
         <Card sx={{ maxWidth: { md: "600px", sm: "auto" } }}>
           <CardHeader
-            subheader="easily store your clients details for future references"
-            title="Add a Client"
+            subheader={`easily store your ${type.toLowerCase()}s details for future references`}
+            title={title}
           />
           <Divider />
           <CardContent>

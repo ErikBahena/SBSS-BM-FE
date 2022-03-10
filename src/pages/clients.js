@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useSearch } from "src/hooks";
 import { clientSearchKeys } from "src/utils/fuzzy-search-keys";
+import { addClient } from "src/fetch-functions";
 
 import { connect } from "react-redux";
 import { getUserClients } from "src/fetch-functions";
@@ -53,12 +54,16 @@ const Clients = ({ userId }) => {
                   open={Boolean(anchorEl)}
                   setAnchorEl={setAnchorEl}
                   refetch={refetch}
+                  addResourceFunc={addClient}
+                  type="client"
+                  title="Add a Client"
                 />
               )}
               <ClientListToolbar
                 searchTerm={searchTerm}
                 handleSearch={handleSearch}
                 setAnchorEl={setAnchorEl}
+                type="client"
               />
               <Box sx={{ mt: 3 }}>
                 <ClientListResults clients={orderedClients} />

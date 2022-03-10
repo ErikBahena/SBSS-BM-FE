@@ -16,6 +16,7 @@ import reducer from "../reducers";
 
 // react query
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = (props) => {
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
             <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>
       </LocalizationProvider>

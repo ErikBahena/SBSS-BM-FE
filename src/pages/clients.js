@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useSearch } from "src/hooks";
 import { clientSearchKeys } from "src/utils/fuzzy-search-keys";
@@ -14,17 +14,20 @@ import { ClientListResults } from "../components/client/client-list-results";
 import { ClientListToolbar } from "../components/client/client-list-toolbar";
 import { DashboardLayout } from "../components/dashboard-layout";
 
-const Customers = ({ userId }) => {
+const Clients = ({ userId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { status, data, refetch } = useQuery("clients", () => getUserClients(userId));
 
-  const [orderedClients, handleSearch, searchTerm] = useSearch("", data, clientSearchKeys);
+  const [orderedClients, handleSearch, searchTerm, setData] = useSearch("", data, clientSearchKeys);
 
+  useEffect(() => data && setData(data), [data]);
+
+  console.log(orderedClients);
   return (
     <>
       <Head>
-        <title>Customers</title>
+        <title>Clients</title>
       </Head>
       <Box
         component="main"
@@ -36,7 +39,7 @@ const Customers = ({ userId }) => {
         <Container maxWidth={false}>
           {status === "loading" && (
             <Stack spacing={1}>
-              <Skeleton variant="rectangular" width={"auto"} height={50} />
+              <Skeleton variant="rectangular" width={"auto"} height={40} />
               <Skeleton variant="rectangular" width={"auto"} height={130} />
               <Skeleton variant="rectangular" width={"auto"} height={250} />
             </Stack>
@@ -55,7 +58,6 @@ const Customers = ({ userId }) => {
               <ClientListToolbar
                 searchTerm={searchTerm}
                 handleSearch={handleSearch}
-                data={data}
                 setAnchorEl={setAnchorEl}
               />
               <Box sx={{ mt: 3 }}>
@@ -71,10 +73,10 @@ const Customers = ({ userId }) => {
   );
 };
 
-Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Clients.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 const mapStateToProps = (state) => ({
   userId: state.user.user_id,
 });
 
-export default connect(mapStateToProps)(Customers);
+export default connect(mapStateToProps)(Clients);

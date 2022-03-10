@@ -5,14 +5,14 @@ export const useSearch = (initialSearchVal, initialData, searchKeys) => {
   const [data, setData] = useState(initialData);
   const [searchTerm, setSearchTerm] = useState(initialSearchVal);
 
-  const handleSearch = (newSearchTerm, data) => {
+  const handleSearch = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
-    setData(data);
 
     const fuzzyResults = fuzzysort.go(newSearchTerm, data, {
       keys: searchKeys,
-
       allowTypo: true,
+      limit: 100, // don't return more results than you need!
+      threshold: -10000, // don't return bad results
     });
 
     let bestResult = fuzzyResults[0]?.obj;

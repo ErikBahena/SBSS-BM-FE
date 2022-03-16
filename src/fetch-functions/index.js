@@ -25,3 +25,10 @@ export const addEmployee = async (newEmployee) => {
 
   return data;
 };
+
+// user job crud functions
+export const getUserJobs = async (user_id) => {
+  const { data } = await axiosWithAuth().get(`/job/user-jobs/${user_id}`);
+
+  return data;
+};

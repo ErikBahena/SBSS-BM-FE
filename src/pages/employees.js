@@ -1,31 +1,20 @@
-import Head from "next/head";
-import { Box, Container } from "@mui/material";
-import { CustomerListResults } from "../components/client/client-list-results";
-import { EmployeeListToolbar } from "src/components/employee/employee-list-toolbar";
-import { DashboardLayout } from "../components/dashboard-layout";
-import { customers } from "../__mocks__/customers";
+import { addEmployee } from "src/fetch-functions";
+import { getUserEmployees } from "src/fetch-functions";
+import { DashboardLayout } from "src/components/dashboard-layout";
 
-const Customers = () => (
-  <>
-    <Head>
-      <title>Employees | Material Kit</title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8,
-      }}
-    >
-      <Container maxWidth={false}>
-        <EmployeeListToolbar />
-        <Box sx={{ mt: 3 }}>
-          <CustomerListResults customers={customers} />
-        </Box>
-      </Container>
-    </Box>
-  </>
-);
-Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+import EmployeePage from "../components/client-employee/index";
 
-export default Customers;
+const Employees = () => {
+  return (
+    <EmployeePage
+      addResourceFunc={addEmployee}
+      type="employee"
+      popoverTitle="Add an Employee"
+      mainResourceFunc={getUserEmployees}
+    />
+  );
+};
+
+Employees.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+
+export default Employees;

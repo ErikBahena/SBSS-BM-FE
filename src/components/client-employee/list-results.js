@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import {
   Avatar,
   Box,
@@ -18,8 +18,9 @@ import {
   CardContent,
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
+import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
-export const ClientListResults = ({ clients }) => {
+export const ListResults = ({ data = [], type }) => {
   const [selectedClientIds, setSelectedClientIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -28,7 +29,7 @@ export const ClientListResults = ({ clients }) => {
     let newSelectedClientIds;
 
     if (event.target.checked) {
-      newSelectedClientIds = clients.map((client) => client.id);
+      newSelectedClientIds = data.map((el) => el[`${type}_id`]);
     } else {
       newSelectedClientIds = [];
     }
@@ -66,7 +67,7 @@ export const ClientListResults = ({ clients }) => {
 
   return (
     <>
-      {clients && !!clients.length && (
+      {data && !!data.length && (
         <Card>
           <PerfectScrollbar>
             <Box sx={{ minWidth: 1050 }}>
@@ -75,10 +76,10 @@ export const ClientListResults = ({ clients }) => {
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedClientIds.length === clients.length}
+                        checked={selectedClientIds.length === data.length}
                         color="primary"
                         indeterminate={
-                          selectedClientIds.length > 0 && selectedClientIds.length < clients.length
+                          selectedClientIds.length > 0 && selectedClientIds.length < data.length
                         }
                         onChange={handleSelectAll}
                       />
@@ -91,49 +92,51 @@ export const ClientListResults = ({ clients }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {clients.slice(0, limit).map((client) => (
-                    <TableRow
-                      hover
-                      key={client.client_id}
-                      selected={selectedClientIds.indexOf(client.client_id) !== -1}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedClientIds.indexOf(client.client_id) !== -1}
-                          onChange={(event) => handleSelectOne(event, client.client_id)}
-                          value="true"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Box
-                          sx={{
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          <Avatar src={client.photo_url} sx={{ mr: 2 }}>
-                            {getInitials(`${client.first_name} ${client.last_name}`)}
-                          </Avatar>
-                          <Typography color="textPrimary" variant="body1">
-                            {client.first_name} {client.last_name}
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>{client.email}</TableCell>
-                      <TableCell>
-                        {`${client.address.city}, ${client.address.state}, ${client.address.country}`}
-                      </TableCell>
-                      <TableCell>{client.phone}</TableCell>
-                      <TableCell>{format(new Date(client.created_at), "dd/MM/yyyy")}</TableCell>
-                    </TableRow>
-                  ))}
+                  {data.slice(0, limit).map((el) => {
+                    return (
+                      <TableRow
+                        hover
+                        key={el[`${type}_id`]}
+                        selected={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
+                            onChange={(event) => handleSelectOne(event, el[`${type}_id`])}
+                            value="true"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            <Avatar src={el.photo_url} sx={{ mr: 2 }}>
+                              {getInitials(`${el.first_name} ${el.last_name}`)}
+                            </Avatar>
+                            <Typography color="textPrimary" variant="body1">
+                              {el.first_name} {el.last_name}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>{el.email}</TableCell>
+                        <TableCell>
+                          {`${el.address.city}, ${el.address.state}, ${el.address.country}`}
+                        </TableCell>
+                        <TableCell>{el.phone}</TableCell>
+                        <TableCell>{format(new Date(el.created_at), "MM/dd/yyyy")}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </Box>
           </PerfectScrollbar>
           <TablePagination
             component="div"
-            count={clients.length}
+            count={data.length}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleLimitChange}
             page={page}
@@ -142,7 +145,8 @@ export const ClientListResults = ({ clients }) => {
           />
         </Card>
       )}
-      {!clients.length && (
+
+      {!data.length && (
         <Card sx={{ maxWidth: 325 }}>
           <CardActionArea>
             <CardMedia
@@ -156,8 +160,8 @@ export const ClientListResults = ({ clients }) => {
                 There is nothing here 😕
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Add a new Client by clicking the <br />
-                <b>Add Client</b> button and get started
+                Add a new {capitalizeFirstLetter(type)} by clicking the <br />
+                <b>Add {capitalizeFirstLetter(type)}</b> button and get started
               </Typography>
             </CardContent>
           </CardActionArea>

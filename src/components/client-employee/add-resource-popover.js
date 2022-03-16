@@ -19,9 +19,8 @@ import {
   Box,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
-const AddClientPopover = ({
+const AddResourcePopover = ({
   anchorEl,
   open,
   setAnchorEl,
@@ -259,4 +258,4 @@ const mapStateToProps = (state) => ({
   userId: state.user.user_id,
 });
 
-export default connect(mapStateToProps)(AddClientPopover);
+export default connect(mapStateToProps)(AddResourcePopover);

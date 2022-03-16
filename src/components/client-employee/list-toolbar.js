@@ -11,7 +11,7 @@ import {
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
 import { Search as SearchIcon } from "../../icons/search";
 
-export const ClientListToolbar = ({ setAnchorEl, handleSearch, searchTerm, type }) => (
+export const ListToolbar = ({ setAnchorEl, handleSearch, searchTerm, type }) => (
   <Box>
     <Box
       sx={{

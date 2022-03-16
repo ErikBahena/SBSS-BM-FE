@@ -1,4 +1,4 @@
-import axiosWithAuth from "src/utils/axiosWithAuth";
+import { axiosWithAuth } from "../utils";
 
 // user client crud functions
 export const getUserClients = async (user_id) => {

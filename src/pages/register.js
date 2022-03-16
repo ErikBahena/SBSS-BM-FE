@@ -1,6 +1,7 @@
 import Head from "next/head";
 import NextLink from "next/link";
 
+import { useState } from "react";
 import { connect } from "react-redux";
 import { access } from "src/actions";
 import { useRouter } from "next/router";
@@ -20,8 +21,11 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TermsOfService from "src/components/register/terms-of-service";
 
 const Register = ({ dispatch, isLoading }) => {
+  const [tosOpen, setTosOpen] = useState(false);
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -137,11 +141,17 @@ const Register = ({ dispatch, isLoading }) => {
               <Typography color="textSecondary" variant="body2">
                 I have read the{" "}
                 <NextLink href="#" passHref>
-                  <Link color="primary" underline="always" variant="subtitle2">
+                  <Link
+                    color="primary"
+                    underline="always"
+                    variant="subtitle2"
+                    onClick={() => setTosOpen(true)}
+                  >
                     Terms and Conditions
                   </Link>
                 </NextLink>
               </Typography>
+              <TermsOfService open={tosOpen} setOpen={setTosOpen} />
             </Box>
             {Boolean(formik.touched.policy && formik.errors.policy) && (
               <FormHelperText error>{formik.errors.policy}</FormHelperText>

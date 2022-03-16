@@ -1,14 +1,13 @@
 import axios from "axios";
+import { BACKEND_URL } from "src/config";
 
-const axiosWithAuth = () => {
+export const axiosWithAuth = () => {
   const token = localStorage.getItem("token");
 
   return axios.create({
     headers: {
       authorization: token,
     },
-    baseURL: "http://localhost:8080/api",
+    baseURL: BACKEND_URL,
   });
 };
-
-export default axiosWithAuth;

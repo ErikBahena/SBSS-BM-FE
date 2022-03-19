@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { format } from "date-fns";
+import { v4 as uuid } from "uuid";
+
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { format, parse } from "date-fns";
+
 import {
   Avatar,
   Box,
@@ -92,11 +95,11 @@ export const ListResults = ({ data = [], type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.slice(0, limit).map((el) => {
+                  {data.slice(0, limit).map((el, i) => {
                     return (
                       <TableRow
                         hover
-                        key={el[`${type}_id`]}
+                        key={uuid()}
                         selected={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
                       >
                         <TableCell padding="checkbox">

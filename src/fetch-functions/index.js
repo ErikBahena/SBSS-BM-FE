@@ -32,3 +32,7 @@ export const getUserJobs = async (user_id) => {
 
   return data;
 };
+
+export const deleteJobEmployeeQFN = async ({ job_id, employee_id }) => {
+  return await axiosWithAuth().delete(`/job/delete-employee/${job_id}/${employee_id}`);
+};

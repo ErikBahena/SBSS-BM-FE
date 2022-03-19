@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
 import { connect } from "react-redux";
-import { v4 as uuid } from "uuid";
+import { useMutation } from "react-query";
+import { deleteJobEmployeeQFN } from "src/fetch-functions";
 
 import { format } from "date-fns";
 import { getInitials, capitalizeName } from "../../utils";
@@ -29,7 +30,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 
-const JobCard = ({ job, userId, allEmployees, isLoading, deleteEmployeeFromJob }) => {
+const JobCard = ({ job, userId, allEmployees, isLoading, refetchJobs, refetchEmployees }) => {
   const filteredEmployees = () =>
     allEmployees
       .map((e) => {
@@ -38,7 +39,15 @@ const JobCard = ({ job, userId, allEmployees, isLoading, deleteEmployeeFromJob }
       })
       .filter((el) => el !== null);
 
-  const [nonAssociatedEmployees, setNonAssociatedEmployees] = useState(filteredEmployees());
+  const [nonAssociatedEmployees] = useState(filteredEmployees());
+
+  const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
+    onSuccess: () => {
+      refetchJobs(), refetchEmployees();
+    },
+  });
+
+  const deleteEmployeeFromJob = (job_id, employee_id) => mutate({ job_id, employee_id });
 
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
@@ -116,7 +125,7 @@ const JobCard = ({ job, userId, allEmployees, isLoading, deleteEmployeeFromJob }
               );
 
               return (
-                <Grid item xs={12} sx={{ py: 4 }}>
+                <Grid item xs={12} sx={{ py: 4 }} key={employee.id}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center" gap={1}>
                       <Avatar>{getInitials(`${employee.first_name} ${employee.last_name}`)}</Avatar>
@@ -134,6 +143,7 @@ const JobCard = ({ job, userId, allEmployees, isLoading, deleteEmployeeFromJob }
                       <ConfirmDeletionDialog
                         title="Remove this employee?"
                         onConfirm={() => deleteEmployeeFromJob(job.job_id, employee.id)}
+                        deleteEmployeeLoading={deleteEmployeeLoading}
                       >
                         Are you sure you want to remove <b> {employeeFullName}</b> from this job?
                         All information regarding this job-employee relationship will be perminantly

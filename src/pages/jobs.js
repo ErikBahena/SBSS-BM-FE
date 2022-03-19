@@ -11,16 +11,14 @@ import { JobListToolbar } from "src/components/job/job-list-toolbar";
 import JobCard from "../components/job/job-card";
 
 const Customers = ({ userId }) => {
-  const { data, status } = useQuery("jobs", () => getUserJobs(userId));
+  const { data, status, refetch: refetchJobs } = useQuery("jobs", () => getUserJobs(userId));
+
   const {
     data: allEmployees,
     isLoading: employeesLoading,
     status: employeeStatus,
+    refetch: refetchEmployees,
   } = useQuery("employees", () => getUserEmployees(userId));
-
-  const deleteEmployeeFromJob = (job_id, employee_id) => {
-    console.log(`deleting ${employee_id} from job: ${job_id}`);
-  };
 
   return (
     <>
@@ -41,13 +39,13 @@ const Customers = ({ userId }) => {
             <Grid container spacing={2} mt={3}>
               {data.map((job) => {
                 return (
-                  <Grid item>
+                  <Grid item key={job.id}>
                     <JobCard
-                      key={job.job_id}
                       job={job}
                       isLoading={employeesLoading}
                       allEmployees={allEmployees}
-                      deleteEmployeeFromJob={deleteEmployeeFromJob}
+                      refetchJobs={refetchJobs}
+                      refetchEmployees={refetchEmployees}
                     />
                   </Grid>
                 );

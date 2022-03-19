@@ -10,17 +10,18 @@ import {
 } from "@mui/material";
 
 import { default as DeleteIcon } from "@mui/icons-material/DeleteForeverOutlined";
+import { LoadingButton } from "@mui/lab";
 
 const ConfirmDeletionDialog = (props) => {
-  const { title, children, onConfirm } = props;
+  const { title, children, onConfirm, deleteEmployeeLoading } = props;
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Tooltip title="Delete Employee from Job">
-        <IconButton onClick={() => setOpen(true)}>
+        <LoadingButton loading={deleteEmployeeLoading} onClick={() => setOpen(true)}>
           <DeleteIcon />
-        </IconButton>
+        </LoadingButton>
       </Tooltip>
 
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="confirm-dialog">

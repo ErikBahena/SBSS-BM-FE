@@ -8,13 +8,6 @@ import match from "autosuggest-highlight/match";
 
 export default function DropDownSelect({ employees, isLoading }) {
   const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState(
-    employees.map((em) => {
-      return {
-        title: `${em.first_name} ${em.last_name}`,
-      };
-    })
-  );
 
   return (
     <Autocomplete
@@ -24,7 +17,11 @@ export default function DropDownSelect({ employees, isLoading }) {
       onClose={() => setOpen(false)}
       isOptionEqualToValue={(option, value) => option.title === value.title}
       getOptionLabel={(option) => option.title}
-      options={options}
+      options={employees.map((em) => {
+        return {
+          title: `${em.first_name} ${em.last_name}`,
+        };
+      })}
       loading={isLoading}
       renderInput={(params) => (
         <TextField

@@ -40,8 +40,6 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
 
   const deleteEmployeeFromJob = (job_id, employee_id) => mutate({ job_id, employee_id });
 
-  const [excludedEmployees, setExcludedEmployees] = useState(job.excluded_employees);
-
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
       <CardContent>
@@ -105,7 +103,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
-              {excludedEmployees.length && <EmployeeMenu employees={excludedEmployees} />}
+              {job.excluded_employees.length && <EmployeeMenu employees={job.excluded_employees} />}
             </Box>
           </Grid>
 

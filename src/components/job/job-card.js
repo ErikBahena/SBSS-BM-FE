@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 import { useMutation } from "react-query";
@@ -29,25 +29,18 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
+import NothingHereCard from "../nothing-here-card";
 
-const JobCard = ({ job, userId, allEmployees, isLoading, refetchJobs, refetchEmployees }) => {
-  const filteredEmployees = () =>
-    allEmployees
-      .map((e) => {
-        const found = job.employees.find((je) => je.id === e.employee_id);
-        return found ? null : e;
-      })
-      .filter((el) => el !== null);
-
-  const [nonAssociatedEmployees] = useState(filteredEmployees());
-
+const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
     onSuccess: () => {
-      refetchJobs(), refetchEmployees();
+      refetchJobs();
     },
   });
 
   const deleteEmployeeFromJob = (job_id, employee_id) => mutate({ job_id, employee_id });
+
+  const [excludedEmployees, setExcludedEmployees] = useState(job.excluded_employees);
 
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
@@ -112,9 +105,7 @@ const JobCard = ({ job, userId, allEmployees, isLoading, refetchJobs, refetchEmp
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
-              {nonAssociatedEmployees.length && (
-                <EmployeeMenu employees={nonAssociatedEmployees} isLoading={isLoading} />
-              )}
+              {excludedEmployees.length && <EmployeeMenu employees={excludedEmployees} />}
             </Box>
           </Grid>
 
@@ -125,7 +116,7 @@ const JobCard = ({ job, userId, allEmployees, isLoading, refetchJobs, refetchEmp
               );
 
               return (
-                <Grid item xs={12} sx={{ py: 4 }} key={employee.id}>
+                <Grid item xs={12} key={employee.id}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center" gap={1}>
                       <Avatar>{getInitials(`${employee.first_name} ${employee.last_name}`)}</Avatar>
@@ -155,7 +146,9 @@ const JobCard = ({ job, userId, allEmployees, isLoading, refetchJobs, refetchEmp
               );
             })
           ) : (
-            <div>No Employees</div>
+            <NothingHereCard>
+              Add a new employee to this job from the <b>Add an Employee</b> drop down menu above
+            </NothingHereCard>
           )}
         </Grid>
       </CardContent>

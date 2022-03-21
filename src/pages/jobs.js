@@ -13,17 +13,10 @@ import JobCard from "../components/job/job-card";
 const Customers = ({ userId }) => {
   const { data, status, refetch: refetchJobs } = useQuery("jobs", () => getUserJobs(userId));
 
-  const {
-    data: allEmployees,
-    isLoading: employeesLoading,
-    status: employeeStatus,
-    refetch: refetchEmployees,
-  } = useQuery("employees", () => getUserEmployees(userId));
-
   return (
     <>
       <Head>
-        <title>Jobs | Material Kit</title>
+        <title>Jobs</title>
       </Head>
       <Box
         component="main"
@@ -35,18 +28,12 @@ const Customers = ({ userId }) => {
         <Container maxWidth={false}>
           <JobListToolbar />
 
-          {status === "success" && employeeStatus === "success" && (
+          {status === "success" && (
             <Grid container spacing={2} mt={3}>
               {data.map((job) => {
                 return (
                   <Grid item key={job.id}>
-                    <JobCard
-                      job={job}
-                      isLoading={employeesLoading}
-                      allEmployees={allEmployees}
-                      refetchJobs={refetchJobs}
-                      refetchEmployees={refetchEmployees}
-                    />
+                    <JobCard job={job} refetchJobs={refetchJobs} />
                   </Grid>
                 );
               })}

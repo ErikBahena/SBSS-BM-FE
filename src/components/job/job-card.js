@@ -108,13 +108,13 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
           </Grid>
 
           {job.employees.length ? (
-            job.employees.map((employee) => {
+            job.employees.map((employee, i) => {
               const employeeFullName = capitalizeName(
                 `${employee.first_name} ${employee.last_name}`
               );
 
               return (
-                <Grid item xs={12} key={employee.id}>
+                <Grid item xs={12} key={i}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center" gap={1}>
                       <Avatar>{getInitials(`${employee.first_name} ${employee.last_name}`)}</Avatar>

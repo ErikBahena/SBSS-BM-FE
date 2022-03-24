@@ -36,3 +36,7 @@ export const getUserJobs = async (user_id) => {
 export const deleteJobEmployeeQFN = async ({ job_id, employee_id }) => {
   return await axiosWithAuth().delete(`/job/delete-employee/${job_id}/${employee_id}`);
 };
+
+export const addJobEmployeeQFN = async ({ job_id, employee_id }) => {
+  return await axiosWithAuth().post(`/job/add-employee/${job_id}/${employee_id}`);
+};

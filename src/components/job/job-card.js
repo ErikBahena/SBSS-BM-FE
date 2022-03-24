@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 import { useMutation } from "react-query";
-import { deleteJobEmployeeQFN } from "src/fetch-functions";
+import { deleteJobEmployeeQFN, addJobEmployeeQFN } from "src/fetch-functions";
 
 import { format } from "date-fns";
 import { getInitials, capitalizeName } from "../../utils";
@@ -30,15 +30,25 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import NothingHereCard from "../nothing-here-card";
+import JobEmployeeHoursCard from "./job-employee-hours-card";
 
 const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
-    onSuccess: () => {
-      refetchJobs();
-    },
+    onSuccess: () => refetchJobs(),
   });
 
+  const { isLoading: addEmployeeLoading, mutate: mutateAddJobEmployee } = useMutation(
+    addJobEmployeeQFN,
+    {
+      onSuccess: () => refetchJobs(),
+    }
+  );
+
   const deleteEmployeeFromJob = (job_id, employee_id) => mutate({ job_id, employee_id });
+
+  const addJobEmployee = (job_id, employee_id) => mutateAddJobEmployee({ job_id, employee_id });
 
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
@@ -103,7 +113,14 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
-              {job.excluded_employees.length && <EmployeeMenu employees={job.excluded_employees} />}
+              {job.excluded_employees.length ? (
+                <EmployeeMenu
+                  employees={job.excluded_employees}
+                  jobId={job.job_id}
+                  addJobEmployee={addJobEmployee}
+                  addEmployeeLoading={addEmployeeLoading}
+                />
+              ) : null}
             </Box>
           </Grid>
 
@@ -124,10 +141,20 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
 
                     <Box display="flex">
                       <Tooltip title="Edit Employee Hours">
-                        <IconButton sx={{ ml: 1 }}>
+                        <IconButton onClick={(e) => setAnchorEl(e.target)} sx={{ ml: 1 }}>
                           <EditOutlinedIcon />
                         </IconButton>
                       </Tooltip>
+
+                      {Boolean(anchorEl) && (
+                        <JobEmployeeHoursCard
+                          jobEmployeeId={employee.id}
+                          employeeLabor={employee.labor_hours}
+                          anchorEl={anchorEl}
+                          setAnchorEl={setAnchorEl}
+                          open={Boolean(anchorEl)}
+                        />
+                      )}
 
                       <ConfirmDeletionDialog
                         title="Remove this employee?"

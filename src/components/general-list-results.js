@@ -5,7 +5,6 @@ import { v4 as uuid } from "uuid";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -17,12 +16,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getInitials } from "../../utils/get-initials";
-import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
-import NothingHereCard from "../nothing-here-card";
+import NothingHereCard from "./nothing-here-card";
 
-export const ListResults = ({ data = [], type }) => {
+export const GeneralListResults = ({ data = [], type }) => {
   const [selectedClientIds, setSelectedClientIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -72,11 +69,11 @@ export const ListResults = ({ data = [], type }) => {
       {data && !!data.length && (
         <Card>
           <PerfectScrollbar>
-            <Box sx={{ minWidth: 1050 }}>
+            <Box>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedClientIds.length === data.length}
                         color="primary"
@@ -85,50 +82,33 @@ export const ListResults = ({ data = [], type }) => {
                         }
                         onChange={handleSelectAll}
                       />
-                    </TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Phone</TableCell>
-                    <TableCell>Registration date</TableCell>
+                    </TableCell> */}
+                    <TableCell>Start</TableCell>
+                    <TableCell>End</TableCell>
+                    <TableCell>Description</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.slice(0, limit).map((el, i) => {
+                  {data.slice(0, limit).map((el) => {
                     return (
                       <TableRow
                         hover
                         key={uuid()}
                         selected={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
                       >
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                           <Checkbox
                             checked={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
                             onChange={(event) => handleSelectOne(event, el[`${type}_id`])}
                             value="true"
                           />
-                        </TableCell>
-                        <TableCell>
-                          <Box
-                            sx={{
-                              alignItems: "center",
-                              display: "flex",
-                            }}
-                          >
-                            <Avatar src={el.photo_url} sx={{ mr: 2 }}>
-                              {getInitials(`${el.first_name} ${el.last_name}`)}
-                            </Avatar>
-                            <Typography color="textPrimary" variant="body1">
-                              {el.first_name} {el.last_name}
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>{el.email}</TableCell>
-                        <TableCell>
-                          {`${el.address.city}, ${el.address.state}, ${el.address.country}`}
-                        </TableCell>
-                        <TableCell>{el.phone}</TableCell>
-                        <TableCell>{format(new Date(el.created_at), "MM/dd/yyyy")}</TableCell>
+                        </TableCell> */}
+
+                        <TableCell>{format(new Date(el.start), "MM/dd/yyyy @h:mm a")}</TableCell>
+                        <TableCell>{format(new Date(el.end), "MM/dd/yyyy @h:mm a")}</TableCell>
+
+                        <TableCell>{el.description}</TableCell>
+                        {/* <TableCell>{format(new Date(el.created_at), "MM/dd/yyyy")}</TableCell> */}
                       </TableRow>
                     );
                   })}
@@ -148,12 +128,7 @@ export const ListResults = ({ data = [], type }) => {
         </Card>
       )}
 
-      {!data.length && (
-        <NothingHereCard>
-          Add a new {capitalizeFirstLetter(type)} by clicking the <br />
-          <b>Add {capitalizeFirstLetter(type)}</b> button and get started
-        </NothingHereCard>
-      )}
+      {!data.length && <NothingHereCard>Add some work to the right!</NothingHereCard>}
     </>
   );
 };

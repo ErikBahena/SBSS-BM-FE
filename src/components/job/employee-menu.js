@@ -7,14 +7,15 @@ import match from "autosuggest-highlight/match";
 
 import AddCircleIcon from "@mui/icons-material/AddOutlined";
 
-export default function DropDownSelect({ employees, isLoading }) {
+export default function DropDownSelect({ employees, isLoading, jobId, addJobEmployee }) {
   const [open, setOpen] = useState(false);
   const [selectedEmployeeId, setEmployeeId] = useState(null);
+  const [val, setVal] = useState(null);
 
   return (
     <Autocomplete
       sx={{ width: 300 }}
-      open={open}
+      value={val}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -26,6 +27,7 @@ export default function DropDownSelect({ employees, isLoading }) {
         };
       })}
       onChange={(e, newValue) => {
+        setVal(newValue);
         newValue ? setEmployeeId(newValue.id) : setEmployeeId(null);
       }}
       loading={isLoading}
@@ -43,7 +45,10 @@ export default function DropDownSelect({ employees, isLoading }) {
                       <IconButton
                         size="small"
                         onClick={() => {
-                          console.log(`Add user with id: ${selectedEmployeeId}`);
+                          addJobEmployee(jobId, selectedEmployeeId);
+                          // setOpen(false);
+                          setVal(null);
+                          setEmployeeId(null);
                         }}
                       >
                         <AddCircleIcon />

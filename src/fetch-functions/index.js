@@ -40,3 +40,7 @@ export const deleteJobEmployeeQFN = async ({ job_id, employee_id }) => {
 export const addJobEmployeeQFN = async ({ job_id, employee_id }) => {
   return await axiosWithAuth().post(`/job/add-employee/${job_id}/${employee_id}`);
 };
+
+export const addJobEmployeeLaborQFN = async (newEvent) => {
+  return await axiosWithAuth().post(`/job/add-employee-labor`, newEvent);
+};

@@ -25,16 +25,12 @@ import EventIcon from "@mui/icons-material/Event";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import NothingHereCard from "../nothing-here-card";
 import JobEmployeeHoursCard from "./job-employee-hours-card";
 
 const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
     onSuccess: () => refetchJobs(),
   });
@@ -140,21 +136,11 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
                     </Box>
 
                     <Box display="flex">
-                      <Tooltip title="Edit Employee Hours">
-                        <IconButton onClick={(e) => setAnchorEl(e.target)} sx={{ ml: 1 }}>
-                          <EditOutlinedIcon />
-                        </IconButton>
-                      </Tooltip>
-
-                      {Boolean(anchorEl) && (
-                        <JobEmployeeHoursCard
-                          jobEmployeeId={employee.id}
-                          employeeLabor={employee.labor_hours}
-                          anchorEl={anchorEl}
-                          setAnchorEl={setAnchorEl}
-                          open={Boolean(anchorEl)}
-                        />
-                      )}
+                      <JobEmployeeHoursCard
+                        jobEmployeeId={employee.id}
+                        employeeLabor={employee.labor_hours}
+                        refetchJobs={refetchJobs}
+                      />
 
                       <ConfirmDeletionDialog
                         title="Remove this employee?"

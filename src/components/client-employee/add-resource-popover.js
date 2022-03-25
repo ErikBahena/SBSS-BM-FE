@@ -145,7 +145,7 @@ const AddResourcePopover = ({
                   name="phone"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  type="number"
+                  type="tel"
                   value={formik.values.phone}
                   variant="outlined"
                 />

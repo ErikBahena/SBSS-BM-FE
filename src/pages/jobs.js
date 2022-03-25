@@ -30,9 +30,9 @@ const Customers = ({ userId }) => {
 
           {status === "success" && (
             <Grid container spacing={2} mt={3}>
-              {data.map((job) => {
+              {data.map((job, i) => {
                 return (
-                  <Grid item key={job.id}>
+                  <Grid item key={i}>
                     <JobCard job={job} refetchJobs={refetchJobs} />
                   </Grid>
                 );

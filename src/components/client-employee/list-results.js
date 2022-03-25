@@ -16,9 +16,6 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  CardActionArea,
-  CardMedia,
-  CardContent,
 } from "@mui/material";
 import { getInitials } from "../../utils/get-initials";
 import { capitalizeFirstLetter } from "src/utils/letter-utils";

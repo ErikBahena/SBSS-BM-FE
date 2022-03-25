@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 import { useMutation } from "react-query";
-import { deleteJobEmployeeQFN } from "src/fetch-functions";
+import { deleteJobEmployeeQFN, addJobEmployeeQFN } from "src/fetch-functions";
 
 import { format } from "date-fns";
 import { getInitials, capitalizeName } from "../../utils";
@@ -25,20 +25,26 @@ import EventIcon from "@mui/icons-material/Event";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import NothingHereCard from "../nothing-here-card";
+import JobEmployeeHoursCard from "./job-employee-hours-card";
 
 const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
-    onSuccess: () => {
-      refetchJobs();
-    },
+    onSuccess: () => refetchJobs(),
   });
 
+  const { isLoading: addEmployeeLoading, mutate: mutateAddJobEmployee } = useMutation(
+    addJobEmployeeQFN,
+    {
+      onSuccess: () => refetchJobs(),
+    }
+  );
+
   const deleteEmployeeFromJob = (job_id, employee_id) => mutate({ job_id, employee_id });
+
+  const addJobEmployee = (job_id, employee_id) => mutateAddJobEmployee({ job_id, employee_id });
 
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
@@ -103,18 +109,25 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
-              {job.excluded_employees.length && <EmployeeMenu employees={job.excluded_employees} />}
+              {job.excluded_employees.length ? (
+                <EmployeeMenu
+                  employees={job.excluded_employees}
+                  jobId={job.job_id}
+                  addJobEmployee={addJobEmployee}
+                  addEmployeeLoading={addEmployeeLoading}
+                />
+              ) : null}
             </Box>
           </Grid>
 
           {job.employees.length ? (
-            job.employees.map((employee) => {
+            job.employees.map((employee, i) => {
               const employeeFullName = capitalizeName(
                 `${employee.first_name} ${employee.last_name}`
               );
 
               return (
-                <Grid item xs={12} key={employee.id}>
+                <Grid item xs={12} key={i}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center" gap={1}>
                       <Avatar>{getInitials(`${employee.first_name} ${employee.last_name}`)}</Avatar>
@@ -123,11 +136,11 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
                     </Box>
 
                     <Box display="flex">
-                      <Tooltip title="Edit Employee Hours">
-                        <IconButton sx={{ ml: 1 }}>
-                          <EditOutlinedIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <JobEmployeeHoursCard
+                        jobEmployeeId={employee.id}
+                        employeeLabor={employee.labor_hours}
+                        refetchJobs={refetchJobs}
+                      />
 
                       <ConfirmDeletionDialog
                         title="Remove this employee?"

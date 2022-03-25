@@ -20,44 +20,9 @@ import {
 import { getInitials } from "../../utils/get-initials";
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
-import NothingHereCard from "../nothing-here-card";
-
 export const ListResults = ({ data = [], type }) => {
-  const [selectedClientIds, setSelectedClientIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-
-  const handleSelectAll = (event) => {
-    let newSelectedClientIds;
-
-    if (event.target.checked) {
-      newSelectedClientIds = data.map((el) => el[`${type}_id`]);
-    } else {
-      newSelectedClientIds = [];
-    }
-
-    setSelectedClientIds(newSelectedClientIds);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedClientIds.indexOf(id);
-    let newSelectedClientIds = [];
-
-    if (selectedIndex === -1) {
-      newSelectedClientIds = newSelectedClientIds.concat(selectedClientIds, id);
-    } else if (selectedIndex === 0) {
-      newSelectedClientIds = newSelectedClientIds.concat(selectedClientIds.slice(1));
-    } else if (selectedIndex === selectedClientIds.length - 1) {
-      newSelectedClientIds = newSelectedClientIds.concat(selectedClientIds.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedClientIds = newSelectedClientIds.concat(
-        selectedClientIds.slice(0, selectedIndex),
-        selectedClientIds.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedClientIds(newSelectedClientIds);
-  };
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -76,38 +41,17 @@ export const ListResults = ({ data = [], type }) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedClientIds.length === data.length}
-                        color="primary"
-                        indeterminate={
-                          selectedClientIds.length > 0 && selectedClientIds.length < data.length
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Location</TableCell>
                     <TableCell>Phone</TableCell>
-                    <TableCell>Registration date</TableCell>
+                    <TableCell>Registration Date</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.slice(0, limit).map((el, i) => {
                     return (
-                      <TableRow
-                        hover
-                        key={uuid()}
-                        selected={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selectedClientIds.indexOf(el[`${type}_id`]) !== -1}
-                            onChange={(event) => handleSelectOne(event, el[`${type}_id`])}
-                            value="true"
-                          />
-                        </TableCell>
+                      <TableRow hover key={uuid()}>
                         <TableCell>
                           <Box
                             sx={{
@@ -146,13 +90,6 @@ export const ListResults = ({ data = [], type }) => {
             rowsPerPageOptions={[5, 10, 25]}
           />
         </Card>
-      )}
-
-      {!data.length && (
-        <NothingHereCard>
-          Add a new {capitalizeFirstLetter(type)} by clicking the <br />
-          <b>Add {capitalizeFirstLetter(type)}</b> button and get started
-        </NothingHereCard>
       )}
     </>
   );

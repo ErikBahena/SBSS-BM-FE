@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { format } from "date-fns";
 
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import * as Yup from "yup";
 
@@ -28,15 +28,23 @@ import { GeneralListResults } from "../general-list-results";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import NothingHereCard from "../nothing-here-card";
-import { addJobEmployeeLaborQFN } from "src/fetch-functions";
+import { addJobEmployeeLaborQFN, getJobEmployeeLaborQFN } from "src/fetch-functions";
 
-const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }) => {
+const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const defaultDateValue = format(new Date(), "yyyy-MM-dd'T'HH:mm");
 
+  const {
+    isLoading: employeeLaborLoading,
+    data: employeeLabor = [],
+    refetch: refetchEmployeeLabor,
+  } = useQuery(`employee_labor${jobEmployeeId}`, () => getJobEmployeeLaborQFN(jobEmployeeId), {
+    enabled: false,
+  });
+
   const { isLoading, mutate } = useMutation(addJobEmployeeLaborQFN, {
-    onSuccess: () => refetchJobs(),
+    onSuccess: () => refetchEmployeeLabor(),
   });
 
   const formik = useFormik({
@@ -47,10 +55,13 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
     },
     validationSchema: Yup.object({
       description: Yup.string().max(255).required("can't be blank"),
+      start: Yup.date().required("must provide a start date"),
+      end: Yup.date().required("must provide a end date"),
     }),
-    onSubmit: (formValues, { setErrors }) => {
+    onSubmit: (formValues, { resetForm }) => {
       const newEvent = { ...formValues, job_employee_id: jobEmployeeId };
 
+      resetForm();
       mutate(newEvent);
     },
   });
@@ -58,7 +69,13 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
   return (
     <>
       <Tooltip title="Edit Employee Hours">
-        <IconButton onClick={(e) => setAnchorEl(e.target)} sx={{ ml: 1 }}>
+        <IconButton
+          onClick={(e) => {
+            refetchEmployeeLabor();
+            setAnchorEl(e.target);
+          }}
+          sx={{ ml: 1 }}
+        >
           <EditOutlinedIcon />
         </IconButton>
       </Tooltip>
@@ -80,18 +97,17 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
       >
         <Card sx={{ maxWidth: { md: "1100px", sm: "auto" } }}>
           <CardHeader
-            // subheader={`easily store your ${type.toLowerCase()}s details for future references`}
             title="Track and Edit your Employees hours"
           />
           <Divider />
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
-                {employeeLabor.length ? (
-                  <GeneralListResults data={employeeLabor} type="job_employee_labor" />
-                ) : (
-                  <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>
-                )}
+                {employeeLaborLoading ? <div>Loading ...</div> : null}
+
+                <GeneralListResults data={employeeLabor} type="job_employee_labor" />
+
+                {!employeeLabor.length && !employeeLaborLoading && <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>}
               </Grid>
               <Grid item xs={12} md={4}>
                 <Typography sx={{ py: 3 }}>Add Employee Labor Hours</Typography>
@@ -100,6 +116,8 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
                   <Grid container spacing={2}>
                     <Grid item md={12} xs={12}>
                       <TextField
+                        error={Boolean(formik.touched.start && formik.errors.start)}
+                        helperText={formik.touched.start && formik.errors.start}
                         id="datetime-local"
                         label="Start"
                         type="datetime-local"
@@ -110,6 +128,8 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
                     </Grid>
                     <Grid item md={12} xs={12}>
                       <TextField
+                        error={Boolean(formik.touched.end && formik.errors.end)}
+                        helperText={formik.touched.end && formik.errors.end}
                         id="datetime-local"
                         label="End"
                         type="datetime-local"
@@ -143,7 +163,7 @@ const JobEmployeeHoursCard = ({ employeeLabor = [], jobEmployeeId, refetchJobs }
                     }}
                   >
                     <Button onClick={() => setAnchorEl(null)} color="cancel" variant="outlined">
-                      Cancel
+                      Close
                     </Button>
                     <LoadingButton
                       color="primary"

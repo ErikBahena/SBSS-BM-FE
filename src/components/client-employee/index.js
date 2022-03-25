@@ -14,6 +14,8 @@ import { ListToolbar } from "src/components/client-employee/list-toolbar";
 
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
+import NothingHereCard from "../nothing-here-card";
+
 const index = ({ userId, addResourceFunc, type, popoverTitle, mainResourceFunc }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -70,6 +72,13 @@ const index = ({ userId, addResourceFunc, type, popoverTitle, mainResourceFunc }
           )}
 
           {status === "error" && <h2>Error</h2>}
+
+          {!data && status === "success" && (
+            <NothingHereCard>
+              Add a new {capitalizeFirstLetter(type)} by clicking the <br />
+              <b>Add {capitalizeFirstLetter(type)}</b> button and get started
+            </NothingHereCard>
+          )}
         </Container>
       </Box>
     </>

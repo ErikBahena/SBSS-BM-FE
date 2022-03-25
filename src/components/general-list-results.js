@@ -2,8 +2,6 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 
-import PerfectScrollbar from "react-perfect-scrollbar";
-
 import {
   Box,
   Card,
@@ -27,7 +25,6 @@ export const GeneralListResults = ({ data = [], type }) => {
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    console.log(newPage, limit);
   };
 
   return (

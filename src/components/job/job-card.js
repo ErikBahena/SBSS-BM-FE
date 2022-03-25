@@ -137,9 +137,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
 
                     <Box display="flex">
                       <JobEmployeeHoursCard
-                        jobEmployeeId={employee.id}
-                        employeeLabor={employee.labor_hours}
-                        refetchJobs={refetchJobs}
+                        jobEmployeeId={employee.job_employee_id}
                       />
 
                       <ConfirmDeletionDialog
@@ -148,7 +146,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
                         deleteEmployeeLoading={deleteEmployeeLoading}
                       >
                         Are you sure you want to remove <b> {employeeFullName}</b> from this job?
-                        All information regarding this job-employee relationship will be perminantly
+                        All information regarding this job-employee relationship will be permanently
                         lost
                       </ConfirmDeletionDialog>
                     </Box>

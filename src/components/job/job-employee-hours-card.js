@@ -38,6 +38,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const {
     isLoading: employeeLaborLoading,
     data: employeeLabor = [],
+    status: employeeLaborStatus,
     refetch: refetchEmployeeLabor,
   } = useQuery(`employee_labor${jobEmployeeId}`, () => getJobEmployeeLaborQFN(jobEmployeeId), {
     enabled: false,
@@ -107,7 +108,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
 
                 <GeneralListResults data={employeeLabor} type="job_employee_labor" />
 
-                {!employeeLabor.length && !employeeLaborLoading && <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>}
+                {!employeeLabor.length && employeeLaborStatus === "success" && <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>}
               </Grid>
               <Grid item xs={12} md={4}>
                 <Typography sx={{ py: 3 }}>Add Employee Labor Hours</Typography>

@@ -49,7 +49,7 @@ export const ListResults = ({ data = [], type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.slice(0, limit).map((el, i) => {
+                  {data.slice(page * limit, page * limit + limit).map((el, i) => {
                     return (
                       <TableRow hover key={uuid()}>
                         <TableCell>

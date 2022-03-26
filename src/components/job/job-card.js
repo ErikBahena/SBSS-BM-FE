@@ -143,7 +143,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
                       <ConfirmDeletionDialog
                         title="Remove this employee?"
                         onConfirm={() => deleteEmployeeFromJob(job.job_id, employee.id)}
-                        deleteEmployeeLoading={deleteEmployeeLoading}
+                        tooltipTitle="Delete Employee from Job"
                       >
                         Are you sure you want to remove <b> {employeeFullName}</b> from this job?
                         All information regarding this job-employee relationship will be permanently

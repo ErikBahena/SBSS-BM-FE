@@ -97,21 +97,25 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
         }}
       >
         <Card sx={{ maxWidth: { md: "1100px", sm: "auto" } }}>
-          <CardHeader
-            title="Track and Edit your Employees hours"
-          />
+          <CardHeader title="Track and Edit your Employees hours" />
           <Divider />
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
                 {employeeLaborLoading ? <div>Loading ...</div> : null}
 
-                <GeneralListResults data={employeeLabor} type="job_employee_labor" />
+                <GeneralListResults
+                  data={employeeLabor}
+                  type="job_employee_labor"
+                  refetchEmployeeLabor={refetchEmployeeLabor}
+                />
 
-                {!employeeLabor.length && employeeLaborStatus === "success" && <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>}
+                {!employeeLabor.length && employeeLaborStatus === "success" && (
+                  <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>
+                )}
               </Grid>
               <Grid item xs={12} md={4}>
-                <Typography sx={{ py: 3 }}>Add Employee Labor Hours</Typography>
+                <Typography sx={{ py: 3 }}>Add Hours</Typography>
 
                 <form onSubmit={formik.handleSubmit} autoComplete="false" autoCorrect="false">
                   <Grid container spacing={2}>

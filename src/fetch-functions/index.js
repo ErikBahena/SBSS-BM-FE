@@ -33,6 +33,7 @@ export const getUserJobs = async (user_id) => {
   return data;
 };
 
+// Job Employee Functions
 export const deleteJobEmployeeQFN = async ({ job_id, employee_id }) => {
   return await axiosWithAuth().delete(`/job/delete-employee/${job_id}/${employee_id}`);
 };
@@ -41,12 +42,17 @@ export const addJobEmployeeQFN = async ({ job_id, employee_id }) => {
   return await axiosWithAuth().post(`/job/add-employee/${job_id}/${employee_id}`);
 };
 
+// Job Employee Labor Functions
 export const addJobEmployeeLaborQFN = async (newEvent) => {
   return await axiosWithAuth().post(`/job/add-employee-labor`, newEvent);
 };
 
 export const getJobEmployeeLaborQFN = async (job_employee_id) => {
   const { data } = await axiosWithAuth().get(`/job/get-employee-labor/${job_employee_id}`);
-  
-  return data.employeeLabor;
+
+  return data;
+};
+
+export const deleteJobEmployeeLaborQFN = async (job_employee_labor_id) => {
+  return await axiosWithAuth().delete(`/job/delete-job-employee-labor/${job_employee_labor_id}`);
 };

@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { format, differenceInMinutes, formatDistance, differenceInHours } from "date-fns";
+import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 
+import { useMutation } from "react-query";
+import { deleteJobEmployeeLaborQFN } from "../fetch-functions";
+
 import {
-  Box,
   Card,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -15,19 +18,21 @@ import {
   Typography,
 } from "@mui/material";
 
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import { EditOutlined } from "@mui/icons-material";
 
-export const GeneralListResults = ({ data = [], type }) => {
+import ConfirmDeletionDialog from "./confirm-deletion-dialog";
+
+export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
+  const { mutate: deleteLaborMutate } = useMutation(deleteJobEmployeeLaborQFN, {
+    onSuccess: () => refetchEmployeeLabor(),
+  });
+
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
-  };
+  const handleLimitChange = (e) => setLimit(e.target.value);
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handlePageChange = (_, newPage) => setPage(newPage);
 
   return (
     <>
@@ -41,6 +46,8 @@ export const GeneralListResults = ({ data = [], type }) => {
                   <TableCell>End</TableCell>
                   <TableCell>Duration</TableCell>
                   <TableCell>Description</TableCell>
+                  <TableCell>Edit</TableCell>
+                  <TableCell>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -54,19 +61,37 @@ export const GeneralListResults = ({ data = [], type }) => {
 
                   return (
                     <TableRow hover key={uuid()}>
-                      <TableCell>{format(new Date(el.start), "MM/dd/yyyy @h:mm a")}</TableCell>
-                      <TableCell>{format(new Date(el.end), "MM/dd/yyyy @h:mm a")}</TableCell>
+                      <TableCell>
+                        {format(new Date(el.start), "MM/dd/yyyy")} <br />
+                        {format(new Date(el.start), "h:mm a")}
+                      </TableCell>
 
                       <TableCell>
-                        <Box display="flex" alignItems="center">
-                          <AccessTimeOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 0.5, display: { xs: "none", md: "initial" } }}
-                          />
-                          {`${hours}:${minutes}`}
-                        </Box>
+                        {format(new Date(el.end), "MM/dd/yyyy")} <br />
+                        {format(new Date(el.end), "h:mm a")}
                       </TableCell>
+
+                      <TableCell>{`${hours}:${minutes}`}</TableCell>
+
                       <TableCell>{el.description}</TableCell>
+
+                      <TableCell>
+                        <IconButton>
+                          <EditOutlined />
+                        </IconButton>
+                      </TableCell>
+
+                      <TableCell>
+                        <ConfirmDeletionDialog
+                          title="Remove Employee Labor"
+                          onConfirm={() => deleteLaborMutate(el.job_employee_labor_id)}
+                          tooltipTitle="Delete Employee Labor"
+                        >
+                          Are you sure you want to delete this employees labor?
+                          <br />
+                          It will be lost forever ♾
+                        </ConfirmDeletionDialog>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

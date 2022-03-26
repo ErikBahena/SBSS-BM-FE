@@ -16,10 +16,17 @@ import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
 import NothingHereCard from "../nothing-here-card";
 
-const index = ({ userId, addResourceFunc, type, popoverTitle, mainResourceFunc }) => {
+const index = ({
+  userId,
+  addResourceFunc,
+  type,
+  popoverTitle,
+  mainResourceFunc,
+  deleteResourceFunc,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { status, data, refetch } = useQuery(`${type}s`, () => mainResourceFunc(userId));
+  const { status, data, refetch: refetchMainResource } = useQuery(`${type}s`, () => mainResourceFunc(userId));
 
   const [orderedData, handleSearch, searchTerm, setData] = useSearch("", data, clientSearchKeys);
 
@@ -53,7 +60,7 @@ const index = ({ userId, addResourceFunc, type, popoverTitle, mainResourceFunc }
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   setAnchorEl={setAnchorEl}
-                  refetch={refetch}
+                  refetch={refetchMainResource}
                   addResourceFunc={addResourceFunc}
                   type={type}
                   title={popoverTitle}
@@ -66,7 +73,12 @@ const index = ({ userId, addResourceFunc, type, popoverTitle, mainResourceFunc }
                 type={type}
               />
               <Box sx={{ mt: 3 }}>
-                <ListResults data={orderedData} type={type} />
+                <ListResults
+                  data={orderedData}
+                  type={type}
+                  deleteResourceFunc={deleteResourceFunc}
+                  refetchMainResource={refetchMainResource}
+                />
               </Box>
             </>
           )}

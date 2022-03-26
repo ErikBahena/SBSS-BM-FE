@@ -73,7 +73,18 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
 
                       <TableCell>{`${hours}:${minutes}`}</TableCell>
 
-                      <TableCell>{el.description}</TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="p"
+                          sx={{
+                            maxWidth: "150px",
+                            display: "inline-block",
+                            overflow: "auto",
+                          }}
+                        >
+                          {el.description}
+                        </Typography>
+                      </TableCell>
 
                       <TableCell>
                         <IconButton>

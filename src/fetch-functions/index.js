@@ -12,6 +12,11 @@ export const addClient = async (newClient) => {
   return data;
 };
 
+export const deleteClientQFN = async (client_id) => {
+  console.log("being called 1234");
+  return await axiosWithAuth().delete(`/client/delete/${client_id}`);
+};
+
 // user employee crud functions
 
 export const getUserEmployees = async (user_id) => {
@@ -24,6 +29,11 @@ export const addEmployee = async (newEmployee) => {
   const { data } = await axiosWithAuth().post(`/employee/add`, newEmployee);
 
   return data;
+};
+
+export const deleteEmployeeQFN = async (employee_id) => {
+  console.log("being called 1234");
+  return await axiosWithAuth().delete(`/employee/delete/${employee_id}`);
 };
 
 // user job crud functions

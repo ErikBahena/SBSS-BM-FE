@@ -1,5 +1,4 @@
-import { addClient } from "src/fetch-functions";
-import { getUserClients } from "src/fetch-functions";
+import { addClient, getUserClients, deleteClientQFN } from "src/fetch-functions";
 import { DashboardLayout } from "src/components/dashboard-layout";
 
 import ClientPage from "../components/client-employee/index";
@@ -11,6 +10,7 @@ const Clients = () => {
       type="client"
       popoverTitle="Add a new Client"
       mainResourceFunc={getUserClients}
+      deleteResourceFunc={deleteClientQFN}
     />
   );
 };

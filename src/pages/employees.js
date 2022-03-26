@@ -1,5 +1,4 @@
-import { addEmployee } from "src/fetch-functions";
-import { getUserEmployees } from "src/fetch-functions";
+import { getUserEmployees, addEmployee, deleteEmployeeQFN } from "src/fetch-functions";
 import { DashboardLayout } from "src/components/dashboard-layout";
 
 import EmployeePage from "../components/client-employee/index";
@@ -11,6 +10,7 @@ const Employees = () => {
       type="employee"
       popoverTitle="Add an Employee"
       mainResourceFunc={getUserEmployees}
+      deleteResourceFunc={deleteEmployeeQFN}
     />
   );
 };

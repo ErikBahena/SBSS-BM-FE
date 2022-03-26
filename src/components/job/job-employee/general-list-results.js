@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 
 import { useMutation } from "react-query";
-import { deleteJobEmployeeLaborQFN } from "../fetch-functions";
+import { deleteJobEmployeeLaborQFN } from "../../../fetch-functions";
 
 import {
   Card,
@@ -20,7 +20,7 @@ import {
 
 import { EditOutlined } from "@mui/icons-material";
 
-import ConfirmDeletionDialog from "./confirm-deletion-dialog";
+import ConfirmDeletionDialog from "../../confirm-deletion-dialog";
 
 export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
   const { mutate: deleteLaborMutate } = useMutation(deleteJobEmployeeLaborQFN, {

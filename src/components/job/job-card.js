@@ -28,7 +28,7 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import NothingHereCard from "../nothing-here-card";
-import JobEmployeeHoursCard from "./job-employee-hours-card";
+import JobEmployeeHoursCard from "./job-employee/job-employee-hours-card";
 
 const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {

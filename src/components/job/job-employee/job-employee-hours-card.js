@@ -24,10 +24,10 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-import { GeneralListResults } from "../general-list-results";
+import { GeneralListResults } from "./general-list-results";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import NothingHereCard from "../nothing-here-card";
+import NothingHereCard from "../../nothing-here-card";
 import { addJobEmployeeLaborQFN, getJobEmployeeLaborQFN } from "src/fetch-functions";
 
 const JobEmployeeHoursCard = ({ jobEmployeeId }) => {

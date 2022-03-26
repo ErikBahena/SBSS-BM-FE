@@ -3,7 +3,6 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import { Cog as CogIcon } from "../icons/cog";
 import { Selector as SelectorIcon } from "../icons/selector";
@@ -14,6 +13,7 @@ import { Work } from "../icons/work";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
+import { EmailOutlined, PhoneOutlined } from "@mui/icons-material";
 
 const items = [
   {
@@ -149,32 +149,29 @@ export const DashboardSidebar = (props) => {
           <Typography color="neutral.100" variant="subtitle2">
             Need more features?
           </Typography>
-          <Typography color="neutral.500" variant="body2">
-            Check out our Pro solution template.
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              mt: 2,
-              mx: "auto",
-              width: "160px",
-              "& img": {
-                width: "100%",
-              },
-            }}
-          >
-            <img alt="Go to pro" src="/static/images/sidebar_pro.png" />
-          </Box>
-          <NextLink href="https://material-kit-pro-react.devias.io/" passHref>
+        
+          <NextLink href="mailto:erikjbahena@gmail.com" passHref>
             <Button
               color="secondary"
               component="a"
-              endIcon={<OpenInNewIcon />}
+              endIcon={<EmailOutlined />}
               fullWidth
               sx={{ mt: 2 }}
               variant="contained"
             >
-              Pro Live Preview
+              Send me an Email
+            </Button>
+          </NextLink>
+          <NextLink href="tel:3608435566" passHref>
+            <Button
+              color="primary"
+              component="a"
+              endIcon={<PhoneOutlined />}
+              fullWidth
+              sx={{ mt: 2 }}
+              variant="contained"
+            >
+              Give me a call
             </Button>
           </NextLink>
         </Box>

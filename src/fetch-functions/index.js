@@ -57,6 +57,12 @@ export const addJobEmployeeLaborQFN = async (newEvent) => {
   return await axiosWithAuth().post(`/job/add-employee-labor`, newEvent);
 };
 
+export const editJobEmployeeLaborQFN = async ({ editedEvent, job_employee_labor_id }) => {
+  const res = await axiosWithAuth().put(`/job/edit-employee-labor/${job_employee_labor_id}`, editedEvent);
+
+  console.log(res);
+};
+
 export const getJobEmployeeLaborQFN = async (job_employee_id) => {
   const { data } = await axiosWithAuth().get(`/job/get-employee-labor/${job_employee_id}`);
 

@@ -28,7 +28,11 @@ import { GeneralListResults } from "./general-list-results";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import NothingHereCard from "../../nothing-here-card";
-import { addJobEmployeeLaborQFN, getJobEmployeeLaborQFN } from "src/fetch-functions";
+import {
+  addJobEmployeeLaborQFN,
+  getJobEmployeeLaborQFN,
+  editJobEmployeeLaborQFN,
+} from "src/fetch-functions";
 
 const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -44,9 +48,13 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
     enabled: false,
   });
 
-  const { isLoading, mutate } = useMutation(addJobEmployeeLaborQFN, {
-    onSuccess: () => refetchEmployeeLabor(),
-  });
+  const { isLoading: addLaborLoading, mutate: addEmployeeLaborMutate } = useMutation(
+    addJobEmployeeLaborQFN,
+    {
+      onSuccess: () => refetchEmployeeLabor(),
+    }
+  );
+
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +71,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
       const newEvent = { ...formValues, job_employee_id: jobEmployeeId };
 
       resetForm();
-      mutate(newEvent);
+      addEmployeeLaborMutate(newEvent);
     },
   });
 
@@ -111,7 +119,9 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                 />
 
                 {!employeeLabor.length && employeeLaborStatus === "success" && (
-                  <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>
+                  <NothingHereCard maxWidth={275}>
+                    Add some work to the right!
+                  </NothingHereCard>
                 )}
               </Grid>
               <Grid item xs={12} md={4}>
@@ -175,7 +185,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                       variant="contained"
                       type="submit"
                       disabled={!formik.isValid}
-                      loading={isLoading}
+                      loading={addLaborLoading}
                     >
                       Save Details
                     </LoadingButton>

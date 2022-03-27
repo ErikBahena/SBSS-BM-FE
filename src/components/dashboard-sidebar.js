@@ -162,7 +162,7 @@ export const DashboardSidebar = (props) => {
               Send me an Email
             </Button>
           </NextLink>
-          <NextLink href="tel:3608435566" passHref>
+          {/* <NextLink href="tel:3608435566" passHref>
             <Button
               color="primary"
               component="a"
@@ -173,7 +173,7 @@ export const DashboardSidebar = (props) => {
             >
               Give me a call
             </Button>
-          </NextLink>
+          </NextLink> */}
         </Box>
       </Box>
     </>

@@ -21,6 +21,7 @@ import {
 import { EditOutlined } from "@mui/icons-material";
 
 import ConfirmDeletionDialog from "../../confirm-deletion-dialog";
+import EditEmployeeHoursPopover from "./edit-employee-hours";
 
 export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
   const { mutate: deleteLaborMutate } = useMutation(deleteJobEmployeeLaborQFN, {
@@ -87,9 +88,7 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
                       </TableCell>
 
                       <TableCell>
-                        <IconButton>
-                          <EditOutlined />
-                        </IconButton>
+                        <EditEmployeeHoursPopover refetchEmployeeLabor={refetchEmployeeLabor} employeeLaborData={el}/>
                       </TableCell>
 
                       <TableCell>

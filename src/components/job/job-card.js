@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { connect } from "react-redux";
 import { useMutation } from "react-query";
-import { deleteJobEmployeeQFN, addJobEmployeeQFN } from "src/fetch-functions";
+import { deleteJobEmployeeQFN, addJobEmployeeQFN, deleteJobQFN } from "src/fetch-functions";
 
 import { format } from "date-fns";
 import { getInitials, capitalizeName } from "../../utils";
 
-import {
-  Box,
-  Grid,
-  Card,
-  Typography,
-  Avatar,
-  CardContent,
-  Divider,
-  Link,
-  Button,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Grid, Card, Typography, Avatar, CardContent, Link } from "@mui/material";
 
 import EventIcon from "@mui/icons-material/Event";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -30,9 +18,14 @@ import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import NothingHereCard from "../nothing-here-card";
 import JobEmployeeHoursCard from "./job-employee/job-employee-hours-card";
 
-const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
+const JobCard = ({ job, refetchJobs }) => {
   const { isLoading: deleteEmployeeLoading, mutate } = useMutation(deleteJobEmployeeQFN, {
     onSuccess: () => refetchJobs(),
+  });
+
+  const { isLoading: deleteJobLoading, mutate: mutateDeleteJob } = useMutation(deleteJobQFN, {
+    onSuccess: () => refetchJobs(),
+    onError: (err) => console.log(err),
   });
 
   const { isLoading: addEmployeeLoading, mutate: mutateAddJobEmployee } = useMutation(
@@ -46,11 +39,26 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
 
   const addJobEmployee = (job_id, employee_id) => mutateAddJobEmployee({ job_id, employee_id });
 
+  const deleteJob = (job_id) => mutateDeleteJob(job_id);
+
   return (
     <Card sx={{ maxWidth: "800px", px: 2, py: 2, backgroundColor: "neutral.100" }}>
       <CardContent>
         <Box>
-          <Typography variant="h6">{capitalizeName(job.title)}</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6">{capitalizeName(job.title)}</Typography>
+
+            <ConfirmDeletionDialog
+              tooltipTitle="Delete Job"
+              title="Delete this job?"
+              onConfirm={() => deleteJob(job.job_id)}
+            >
+              Are you sure you want to remove job: <b>{capitalizeName(job.title)}</b> 
+              <br />
+              This action can't be undone and all employee labor regarding this job will be lost, lost forever ♾
+            </ConfirmDeletionDialog>
+          </Box>
+
           <Typography sx={{ mb: 0.8 }} variant="body1">
             {job.description}
           </Typography>
@@ -105,7 +113,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
@@ -136,9 +144,7 @@ const JobCard = ({ job, userId, isLoading, refetchJobs }) => {
                     </Box>
 
                     <Box display="flex">
-                      <JobEmployeeHoursCard
-                        jobEmployeeId={employee.job_employee_id}
-                      />
+                      <JobEmployeeHoursCard jobEmployeeId={employee.job_employee_id} />
 
                       <ConfirmDeletionDialog
                         title="Remove this employee?"

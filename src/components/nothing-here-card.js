@@ -4,7 +4,7 @@ import { Card, Typography, CardActionArea, CardMedia, CardContent } from "@mui/m
 
 export default function NothingHereCard({ children, maxWidth = 325 }) {
   return (
-    <Card sx={{ maxWidth: maxWidth }}>
+    <Card sx={{ maxWidth: maxWidth, pointerEvents: "none" }}>
       <CardActionArea>
         <CardMedia
           component="img"

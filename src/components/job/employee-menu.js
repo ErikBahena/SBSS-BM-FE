@@ -46,7 +46,7 @@ export default function DropDownSelect({ employees, isLoading, jobId, addJobEmpl
                         size="small"
                         onClick={() => {
                           addJobEmployee(jobId, selectedEmployeeId);
-                          // setOpen(false);
+                          setOpen(false);
                           setVal(null);
                           setEmployeeId(null);
                         }}

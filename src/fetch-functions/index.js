@@ -13,7 +13,6 @@ export const addClient = async (newClient) => {
 };
 
 export const deleteClientQFN = async (client_id) => {
-  console.log("being called 1234");
   return await axiosWithAuth().delete(`/client/delete/${client_id}`);
 };
 
@@ -32,7 +31,6 @@ export const addEmployee = async (newEmployee) => {
 };
 
 export const deleteEmployeeQFN = async (employee_id) => {
-  console.log("being called 1234");
   return await axiosWithAuth().delete(`/employee/delete/${employee_id}`);
 };
 
@@ -41,6 +39,10 @@ export const getUserJobs = async (user_id) => {
   const { data } = await axiosWithAuth().get(`/job/user-jobs/${user_id}`);
 
   return data;
+};
+
+export const deleteJobQFN = async (job_id) => {
+  return await axiosWithAuth().delete(`/job/delete/${job_id}`);
 };
 
 // Job Employee Functions
@@ -58,9 +60,10 @@ export const addJobEmployeeLaborQFN = async (newEvent) => {
 };
 
 export const editJobEmployeeLaborQFN = async ({ editedEvent, job_employee_labor_id }) => {
-  const res = await axiosWithAuth().put(`/job/edit-employee-labor/${job_employee_labor_id}`, editedEvent);
-
-  console.log(res);
+  return await axiosWithAuth().put(
+    `/job/edit-employee-labor/${job_employee_labor_id}`,
+    editedEvent
+  );
 };
 
 export const getJobEmployeeLaborQFN = async (job_employee_id) => {

@@ -18,6 +18,7 @@ import {
   TableRow,
   Typography,
   IconButton,
+  TableContainer,
 } from "@mui/material";
 import { EditOutlined } from "@mui/icons-material";
 
@@ -46,8 +47,8 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
       {data && !!data.length && (
         <Card>
           <PerfectScrollbar>
-            <Box sx={{ minWidth: 1050 }}>
-              <Table>
+            <TableContainer >
+              <Table sx={{ maxHeight: { xs: 300, md: 500 }, minHeight: { xs: 250, sm: 300 } }}> 
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
@@ -115,7 +116,7 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                   })}
                 </TableBody>
               </Table>
-            </Box>
+            </TableContainer>
           </PerfectScrollbar>
           <TablePagination
             component="div"

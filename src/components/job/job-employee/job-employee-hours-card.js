@@ -84,6 +84,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
             setAnchorEl(e.target);
           }}
           sx={{ ml: 1 }}
+          color="info"
         >
           <EditOutlinedIcon />
         </IconButton>

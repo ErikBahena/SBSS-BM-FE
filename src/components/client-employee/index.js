@@ -26,7 +26,11 @@ const index = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { status, data, refetch: refetchMainResource } = useQuery(`${type}s`, () => mainResourceFunc(userId));
+  const {
+    status,
+    data,
+    refetch: refetchMainResource,
+  } = useQuery(`${type}s`, () => mainResourceFunc(userId));
 
   const [orderedData, handleSearch, searchTerm, setData] = useSearch("", data, clientSearchKeys);
 
@@ -44,53 +48,54 @@ const index = ({
           py: 8,
         }}
       >
-        <Container maxWidth={false}>
-          {status === "loading" && (
-            <Stack spacing={1}>
-              <Skeleton variant="rectangular" width={"auto"} height={40} />
-              <Skeleton variant="rectangular" width={"auto"} height={130} />
-              <Skeleton variant="rectangular" width={"auto"} height={250} />
-            </Stack>
-          )}
+        <Container maxWidth="false">
 
-          {status === "success" && (
-            <>
-              {Boolean(anchorEl) && (
-                <AddResourcePopover
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  setAnchorEl={setAnchorEl}
-                  refetch={refetchMainResource}
-                  addResourceFunc={addResourceFunc}
-                  type={type}
-                  title={popoverTitle}
-                />
-              )}
-              <ListToolbar
-                searchTerm={searchTerm}
-                handleSearch={handleSearch}
+        {status === "loading" && (
+          <Stack spacing={1}>
+            <Skeleton variant="rectangular" width={"auto"} height={40} />
+            <Skeleton variant="rectangular" width={"auto"} height={130} />
+            <Skeleton variant="rectangular" width={"auto"} height={250} />
+          </Stack>
+        )}
+
+        {status === "success" && (
+          <>
+            {Boolean(anchorEl) && (
+              <AddResourcePopover
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
                 setAnchorEl={setAnchorEl}
+                refetch={refetchMainResource}
+                addResourceFunc={addResourceFunc}
                 type={type}
+                title={popoverTitle}
               />
-              <Box sx={{ mt: 3 }}>
-                <ListResults
-                  data={orderedData}
-                  type={type}
-                  deleteResourceFunc={deleteResourceFunc}
-                  refetchMainResource={refetchMainResource}
-                />
-              </Box>
-            </>
-          )}
+            )}
+            <ListToolbar
+              searchTerm={searchTerm}
+              handleSearch={handleSearch}
+              setAnchorEl={setAnchorEl}
+              type={type}
+            />
+            <Box sx={{ mt: 3 }}>
+              <ListResults
+                data={orderedData}
+                type={type}
+                deleteResourceFunc={deleteResourceFunc}
+                refetchMainResource={refetchMainResource}
+              />
+            </Box>
+          </>
+        )}
 
-          {status === "error" && <h2>Error</h2>}
+        {status === "error" && <h2>Error</h2>}
 
-          {!data && status === "success" && (
-            <NothingHereCard>
-              Add a new {capitalizeFirstLetter(type)} by clicking the <br />
-              <b>Add {capitalizeFirstLetter(type)}</b> button and get started
-            </NothingHereCard>
-          )}
+        {!data && status === "success" && (
+          <NothingHereCard>
+            Add a new {capitalizeFirstLetter(type)} by clicking the <br />
+            <b>Add {capitalizeFirstLetter(type)}</b> button and get started
+          </NothingHereCard>
+        )}
         </Container>
       </Box>
     </>

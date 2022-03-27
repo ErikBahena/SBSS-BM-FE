@@ -12,13 +12,13 @@ import {
 import { default as DeleteIcon } from "@mui/icons-material/DeleteForeverOutlined";
 
 const ConfirmDeletionDialog = (props) => {
-  const { title, children, onConfirm, tooltipTitle } = props;
+  const { title, children, onConfirm, tooltipTitle, iconColor = "default" } = props;
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Tooltip title={tooltipTitle}>
-        <IconButton onClick={() => setOpen(true)}>
+        <IconButton onClick={() => setOpen(true)} color={iconColor}>
           <DeleteIcon />
         </IconButton>
       </Tooltip>

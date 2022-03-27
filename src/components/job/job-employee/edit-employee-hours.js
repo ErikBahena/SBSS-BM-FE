@@ -55,7 +55,7 @@ const EditEmployeeHoursPopover = ({ refetchEmployeeLabor, employeeLaborData }) =
 
   return (
     <>
-      <IconButton onClick={(e) => setAnchorEl(e.target)}>
+      <IconButton onClick={(e) => setAnchorEl(e.target)} color="info">
         <EditOutlined />
       </IconButton>
 
@@ -66,17 +66,16 @@ const EditEmployeeHoursPopover = ({ refetchEmployeeLabor, employeeLaborData }) =
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         anchorOrigin={{
-          vertical: "bottom",
+          vertical: "center",
           horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
         }}
-        sx={{ maxWidth: { xs: "auto", md: "350px", lg: "500px" } }}
       >
         <form onSubmit={formik.handleSubmit} autoComplete="false" autoCorrect="false">
-          <Card>
+          <Card sx={{ maxWidth: { sm: "350px" } }}>
             <CardHeader title={"Edit Employee Labor"} padding="10px" />
             <Divider />
 

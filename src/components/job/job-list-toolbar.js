@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
   TextField,
@@ -9,9 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Search as SearchIcon } from "../../icons/search";
+import AddJobPopover from "./add-job-popover";
 
-export const JobListToolbar = (props) => (
-  <Box {...props}>
+export const JobListToolbar = ({ refetchJobs }) => (
+  <Box>
     <Box
       sx={{
         alignItems: "center",
@@ -25,9 +25,7 @@ export const JobListToolbar = (props) => (
         Jobs
       </Typography>
       <Box sx={{ m: 1 }}>
-        <Button color="primary" variant="contained">
-          Add Job
-        </Button>
+        <AddJobPopover refetchJobs={refetchJobs} />
       </Box>
     </Box>
     <Box sx={{ mt: 3 }}>

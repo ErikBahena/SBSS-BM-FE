@@ -2,13 +2,14 @@ import Head from "next/head";
 
 import { connect } from "react-redux";
 import { useQuery } from "react-query";
-import { getUserJobs, getUserEmployees } from "src/fetch-functions";
+import { getUserJobs } from "src/fetch-functions";
 
 import { Box, Container, Grid } from "@mui/material";
 
 import { DashboardLayout } from "../components/dashboard-layout";
 import { JobListToolbar } from "src/components/job/job-list-toolbar";
 import JobCard from "../components/job/job-card";
+import NothingHereCard from "src/components/nothing-here-card";
 
 const Customers = ({ userId }) => {
   const { data, status, refetch: refetchJobs } = useQuery("jobs", () => getUserJobs(userId));
@@ -26,9 +27,9 @@ const Customers = ({ userId }) => {
         }}
       >
         <Container maxWidth={false}>
-          <JobListToolbar />
+          <JobListToolbar refetchJobs={refetchJobs} />
 
-          {status === "success" && (
+          {status === "success" && data && (
             <Grid container spacing={2} mt={3}>
               {data.map((job, i) => {
                 return (
@@ -38,6 +39,12 @@ const Customers = ({ userId }) => {
                 );
               })}
             </Grid>
+          )}
+
+          {status === "success" && !data.length && (
+            <NothingHereCard>
+              Add a job with the <b>Add Job</b> button above
+            </NothingHereCard>
           )}
         </Container>
       </Box>

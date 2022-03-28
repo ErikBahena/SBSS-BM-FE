@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
-import { useMutation } from "react-query";
-import { connect } from "react-redux";
+import { useState } from "react";
+import { useMutation, useQuery } from "react-query";
 
-import { phoneRegExp } from "src/utils/regexExpressions";
-import { states } from "../../__mocks__/states";
+import { addJobQFN, getUserClients } from "src/fetch-functions";
+
+import { connect } from "react-redux";
 
 import * as Yup from "yup";
 
@@ -17,23 +18,27 @@ import {
   Grid,
   TextField,
   Box,
+  Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
-const AddResourcePopover = ({
-  anchorEl,
-  open,
-  setAnchorEl,
-  userId,
-  refetch,
-  addResourceFunc,
-  type,
-  title,
-}) => {
-  const { mutate, isLoading } = useMutation(addResourceFunc, {
+import DropDownSelect from "./employee-menu";
+
+import NextLink from "next/link";
+import { Users as UsersIcon } from "../../icons/users";
+
+const AddJobPopover = ({ anchorEl, userId, refetchJobs }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const { isLoading: getClientsLoading, data: clients = [] } = useQuery(`clients`, () =>
+    getUserClients(userId)
+  );
+
+  const { mutate: mutateAddJob, isLoading: addJobLoading } = useMutation(addJobQFN, {
     onSuccess: () => {
-      refetch();
+      refetchJobs();
       setAnchorEl(null);
+      formik.resetForm();
     },
     onError: () => {
       alert("there was an error");
@@ -42,215 +47,147 @@ const AddResourcePopover = ({
 
   const formik = useFormik({
     initialValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      street: "",
-      postal_code: "",
-      city: "",
-      state: "",
-      country: "",
-      phone: "",
+      title: "",
+      description: "",
+      client_id: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("invalid email ⚠️").max(255).required("can't be blank 😝"),
-      first_name: Yup.string().max(255).required("can't be blank"),
-      last_name: Yup.string().max(255).required("can't be blank"),
-      street: Yup.string().max(255).required("can't be blank"),
-      city: Yup.string().max(255).required("can't be blank"),
-      country: Yup.string().max(255).required("can't be blank"),
-      postal_code: Yup.string().max(5, "can't be longer than 5 digits").required("can't be blank"),
-      phone: Yup.string()
-        .matches(phoneRegExp, "invalid phone number ⚠️")
-        .required("can't be blank"),
-      state: Yup.mixed().notOneOf(["default"]).required("you must select a state "),
+      title: Yup.string().max(255).required("can't be blank"),
+      description: Yup.string().max(255).required("can't be blank"),
+      client_id: Yup.mixed().required("you must select a client"),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      formValues.user_id = userId;
+      const newJob = { ...formValues, user_id: userId };
 
-      mutate(formValues);
+      mutateAddJob(newJob);
     },
   });
 
   return (
-    <Popover
-      open={open}
-      onClose={() => setAnchorEl(null)}
-      anchorEl={anchorEl}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-    >
-      <form onSubmit={formik.handleSubmit} autoComplete="false" autoCorrect="false">
-        <Card sx={{ maxWidth: { md: "600px", sm: "auto" } }}>
-          <CardHeader
-            subheader={`easily store your ${type.toLowerCase()}s details for future references`}
-            title={title}
-          />
-          <Divider />
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.first_name && formik.errors.first_name)}
-                  helperText={formik.touched.first_name && formik.errors.first_name}
-                  label="First Name"
-                  name="first_name"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.first_name}
-                  variant="outlined"
-                />
+    <>
+      <Button color="primary" variant="contained" onClick={(e) => setAnchorEl(e.target)}>
+        Add Job
+      </Button>
+
+      <Popover
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        anchorEl={anchorEl}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <form onSubmit={formik.handleSubmit} autoComplete="false" autoCorrect="false">
+          <Card sx={{ maxWidth: { md: "600px", sm: "auto" } }}>
+            <CardHeader
+              subheader={`easily store your details for future references`}
+              title={"Add a Job"}
+            />
+            <Divider />
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    error={Boolean(formik.touched.title && formik.errors.title)}
+                    helperText={formik.touched.title && formik.errors.title}
+                    label="Title"
+                    name="title"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.title}
+                    variant="outlined"
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    error={Boolean(formik.touched.description && formik.errors.description)}
+                    helperText={formik.touched.description && formik.errors.description}
+                    label="Description"
+                    name="description"
+                    onBlur={formik.handleBlur}
+                    multiline
+                    onChange={formik.handleChange}
+                    value={formik.values.description}
+                    variant="outlined"
+                  />
+                </Grid>
+
+                <Grid item md={6} xs={12}>
+                  {clients.length > 0 && (
+                    <DropDownSelect
+                      error={Boolean(formik.touched.client_id && formik.errors.client_id)}
+                      helperText={formik.touched.client_id && formik.errors.client_id}
+                      formikSetValue={formik.setFieldValue}
+                      formikValueName="client_id"
+                      data={clients.map((cl) => {
+                        return { ...cl, id: cl.client_id };
+                      })}
+                      textFieldLabel="Select a Client"
+                      isLoading={getClientsLoading}
+                      parentResourceId={userId}
+                      asyncAdd={false}
+                    />
+                  )}
+                </Grid>
+
+                {clients.length < 1 && (
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2faded">
+                      You have no registered clients. Please go to the clients page and register a new client
+                    </Typography>
+                    <NextLink href="/clients" passHref>
+                      <Button
+                        color="secondary"
+                        component="a"
+                        endIcon={<UsersIcon />}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                        variant="contained"
+                        size="sizeSmall"
+                      >
+                        Clients
+                      </Button>
+                    </NextLink>
+                  </Grid>
+                )}
               </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.last_name && formik.errors.last_name)}
-                  helperText={formik.touched.last_name && formik.errors.last_name}
-                  label="Last Name"
-                  name="last_name"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.last_name}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.email && formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
-                  name="email"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.phone && formik.errors.phone)}
-                  helperText={formik.touched.phone && formik.errors.phone}
-                  label="Phone Number"
-                  name="phone"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  type="tel"
-                  value={formik.values.phone}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.street && formik.errors.street)}
-                  helperText={formik.touched.street && formik.errors.street}
-                  label="Street"
-                  name="street"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.street}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.city && formik.errors.city)}
-                  helperText={formik.touched.city && formik.errors.city}
-                  label="City"
-                  name="city"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.city}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  error={Boolean(formik.touched.state && formik.errors.state)}
-                  helperText={formik.touched.state && formik.errors.state}
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={formik.handleChange}
-                  select
-                  SelectProps={{
-                    native: true,
-                    value: formik.values.state.toLowerCase(),
-                  }}
-                  variant="outlined"
-                >
-                  {states.map(({ value, label }) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.postal_code && formik.errors.postal_code)}
-                  helperText={formik.touched.postal_code && formik.errors.postal_code}
-                  label="Postal Code"
-                  name="postal_code"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.postal_code}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  error={Boolean(formik.touched.country && formik.errors.country)}
-                  helperText={formik.touched.country && formik.errors.country}
-                  label="Country"
-                  name="country"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.country}
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-          </CardContent>
-          <Divider />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              p: 2,
-              gap: 1,
-            }}
-          >
-            <Button onClick={() => setAnchorEl(null)} color="cancel" variant="outlined">
-              Cancel
-            </Button>
-            <LoadingButton
-              color="primary"
-              variant="contained"
-              type="submit"
-              disabled={!formik.isValid}
-              loading={isLoading}
+            </CardContent>
+            <Divider />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                p: 2,
+                gap: 1,
+              }}
             >
-              Save Details
-            </LoadingButton>
-          </Box>
-        </Card>
-      </form>
-    </Popover>
+              <Button onClick={() => setAnchorEl(null)} color="cancel" variant="outlined">
+                Cancel
+              </Button>
+              <LoadingButton
+                color="primary"
+                variant="contained"
+                type="submit"
+                disabled={!formik.isValid}
+                loading={addJobLoading}
+              >
+                Save Details
+              </LoadingButton>
+            </Box>
+          </Card>
+        </form>
+      </Popover>
+    </>
   );
 };
 
@@ -258,4 +195,4 @@ const mapStateToProps = (state) => ({
   userId: state.user.user_id,
 });
 
-export default connect(mapStateToProps)(AddResourcePopover);
+export default connect(mapStateToProps)(AddJobPopover);

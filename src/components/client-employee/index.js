@@ -28,13 +28,13 @@ const index = ({
 
   const {
     status,
-    data,
+    data = [],
     refetch: refetchMainResource,
   } = useQuery(`${type}s`, () => mainResourceFunc(userId));
 
   const [orderedData, handleSearch, searchTerm, setData] = useSearch("", data, clientSearchKeys);
 
-  useEffect(() => data && setData(data), [data]);
+  useEffect(() => data.length && setData(data), [data]);
 
   return (
     <>
@@ -90,7 +90,7 @@ const index = ({
 
         {status === "error" && <h2>Error</h2>}
 
-        {!data && status === "success" && (
+        {!data.length && status === "success" && (
           <NothingHereCard>
             Add a new {capitalizeFirstLetter(type)} by clicking the <br />
             <b>Add {capitalizeFirstLetter(type)}</b> button and get started

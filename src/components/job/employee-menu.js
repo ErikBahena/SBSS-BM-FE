@@ -7,9 +7,20 @@ import match from "autosuggest-highlight/match";
 
 import AddCircleIcon from "@mui/icons-material/AddOutlined";
 
-export default function DropDownSelect({ employees, isLoading, jobId, addJobEmployee }) {
-  const [open, setOpen] = useState(false);
-  const [selectedEmployeeId, setEmployeeId] = useState(null);
+export default function DropDownSelect({
+  isLoading,
+  parentResourceId,
+  addResourceFunc,
+  data,
+  textFieldLabel,
+  asyncAdd,
+  error,
+  helperText,
+  formikSetValue,
+  formikValueName,
+}) {
+  const [_, setOpen] = useState(false);
+  const [selectedResourceId, setResourceId] = useState(null);
   const [val, setVal] = useState(null);
 
   return (
@@ -20,35 +31,41 @@ export default function DropDownSelect({ employees, isLoading, jobId, addJobEmpl
       onClose={() => setOpen(false)}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.label}
-      options={employees.map((em) => {
+      options={data.map((el) => {
         return {
-          label: `${em.first_name} ${em.last_name}`,
-          id: em.id,
+          label: `${el.first_name} ${el.last_name}`,
+          id: el.id,
         };
       })}
       onChange={(e, newValue) => {
         setVal(newValue);
-        newValue ? setEmployeeId(newValue.id) : setEmployeeId(null);
+        if (newValue) {
+          setResourceId(newValue.id);
+          formikSetValue && formikSetValue(formikValueName, newValue.id);
+        } else setResourceId(null);
       }}
       loading={isLoading}
       renderInput={(params) => {
         return (
           <TextField
             {...params}
-            label="Add an Employee"
+            label={textFieldLabel}
+            error={error}
+            helperText={helperText}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
                 <>
-                  {selectedEmployeeId && (
+                  {selectedResourceId && asyncAdd && (
                     <Tooltip title="add employee to job">
                       <IconButton
                         size="small"
                         onClick={() => {
-                          addJobEmployee(jobId, selectedEmployeeId);
+                          if (addResourceFunc)
+                            addResourceFunc(parentResourceId, selectedResourceId);
                           setOpen(false);
                           setVal(null);
-                          setEmployeeId(null);
+                          setResourceId(null);
                         }}
                       >
                         <AddCircleIcon />

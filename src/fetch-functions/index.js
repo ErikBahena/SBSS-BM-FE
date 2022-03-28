@@ -45,6 +45,10 @@ export const deleteJobQFN = async (job_id) => {
   return await axiosWithAuth().delete(`/job/delete/${job_id}`);
 };
 
+export const addJobQFN = async (newJob) => {
+  return await axiosWithAuth().post(`/job/add`, newJob);
+};
+
 // Job Employee Functions
 export const deleteJobEmployeeQFN = async ({ job_id, employee_id }) => {
   return await axiosWithAuth().delete(`/job/delete-employee/${job_id}/${employee_id}`);

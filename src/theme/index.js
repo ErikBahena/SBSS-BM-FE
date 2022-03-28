@@ -260,6 +260,12 @@ export const theme = createTheme({
       fontWeight: 500,
       lineHeight: 1.57,
     },
+    subtitle2faded: {
+      fontSize: "0.875rem",
+      opacity: 0.3,
+      fontWeight: 500,
+      lineHeight: 1.57,
+    },
     overline: {
       fontSize: "0.75rem",
       fontWeight: 600,

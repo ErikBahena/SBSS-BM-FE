@@ -119,10 +119,12 @@ const JobCard = ({ job, refetchJobs }) => {
               </Typography>
               {job.excluded_employees.length ? (
                 <EmployeeMenu
-                  employees={job.excluded_employees}
-                  jobId={job.job_id}
-                  addJobEmployee={addJobEmployee}
-                  addEmployeeLoading={addEmployeeLoading}
+                  data={job.excluded_employees}
+                  textFieldLabel="Add an Employee"
+                  parentResourceId={job.job_id}
+                  addResourceFunc={addJobEmployee}
+                  isLoading={addEmployeeLoading}
+                  asyncAdd={true}
                 />
               ) : null}
             </Box>

@@ -7,7 +7,7 @@ import { DashboardLayout } from "../dashboard-layout";
 
 import Login from "../../pages/login.js";
 
-const withAuth = (Component) => {
+const withAuth = (Component, noLayout) => {
   const Auth = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
@@ -17,13 +17,15 @@ const withAuth = (Component) => {
 
     if (!user) dispatch(reloadByToken(token));
 
-    if (user)
-      return (
-        <DashboardLayout>
-          <Component />
-        </DashboardLayout>
-      );
-    else return <Login />;
+    if (user) {
+      if (noLayout) return <Component />;
+      else
+        return (
+          <DashboardLayout>
+            <Component />
+          </DashboardLayout>
+        );
+    } else return <Login />;
   };
 
   return Auth;

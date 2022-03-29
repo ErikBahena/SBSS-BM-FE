@@ -1,63 +1,117 @@
-import { useState } from 'react';
-import { Box, Button, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material';
+import { useFormik } from "formik";
+import { useState } from "react";
 
-export const SettingsPassword = (props) => {
-  const [values, setValues] = useState({
-    password: '',
-    confirm: ''
+import * as Yup from "yup";
+
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
+export const SettingsPassword = ({ email }) => {
+  const [oldPwVisible, setOldPwVisibility] = useState(false);
+  const [newPwVisible, setNewPwVisibility] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      oldPassword: "",
+      newPassword: "",
+    },
+    validationSchema: Yup.object({
+      oldPassword: Yup.string().max(255).required("can't be blank"),
+      newPassword: Yup.string().max(255).required("can't be blank"),
+    }),
+    onSubmit: (formValues, { setErrors }) => {
+      console.log(formValues);
+    },
   });
 
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
   return (
-    <form {...props}>
+    <form onSubmit={formik.handleSubmit}>
       <Card>
-        <CardHeader
-          subheader="Update password"
-          title="Password"
-        />
+        <CardHeader subheader="Update password" title="Password" />
         <Divider />
         <CardContent>
           <TextField
+            error={Boolean(formik.touched.oldPassword && formik.errors.oldPassword)}
             fullWidth
-            label="Password"
+            helperText={formik.touched.oldPassword && formik.errors.oldPassword}
+            label="Old Password"
             margin="normal"
-            name="password"
-            onChange={handleChange}
-            type="password"
-            value={values.password}
+            name="oldPassword"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            type={oldPwVisible ? "text" : "password"}
+            value={formik.values.oldPassword}
             variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setOldPwVisibility(!oldPwVisible)}
+                    edge="end"
+                  >
+                    {oldPwVisible ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
+            error={Boolean(formik.touched.newPassword && formik.errors.newPassword)}
             fullWidth
-            label="Confirm password"
+            helperText={formik.touched.newPassword && formik.errors.newPassword}
+            label="New Password"
             margin="normal"
-            name="confirm"
-            onChange={handleChange}
-            type="password"
-            value={values.confirm}
+            name="newPassword"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            type={newPwVisible ? "text" : "password"}
+            value={formik.values.newPassword}
             variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setNewPwVisibility(!newPwVisible)}
+                    edge="end"
+                  >
+                    {newPwVisible ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </CardContent>
         <Divider />
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
+            display: "flex",
+            justifyContent: "flex-end",
+            p: 2,
           }}
         >
-          <Button
+          <LoadingButton
             color="primary"
             variant="contained"
+            type="submit"
+            disabled={!formik.isValid}
+            loading={false}
           >
-            Update
-          </Button>
+            Update Password
+          </LoadingButton>
         </Box>
       </Card>
     </form>

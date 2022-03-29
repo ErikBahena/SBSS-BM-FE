@@ -6,12 +6,13 @@ import { getUserJobs } from "src/fetch-functions";
 
 import { Box, Container, Grid } from "@mui/material";
 
-import { DashboardLayout } from "../components/dashboard-layout";
 import { JobListToolbar } from "src/components/job/job-list-toolbar";
 import JobCard from "../components/job/job-card";
 import NothingHereCard from "src/components/nothing-here-card";
 
-const Customers = ({ userId }) => {
+import withAuth from "src/components/auth/with-auth";
+
+const Jobs = ({ userId }) => {
   const { data, status, refetch: refetchJobs } = useQuery("jobs", () => getUserJobs(userId));
 
   return (
@@ -52,10 +53,8 @@ const Customers = ({ userId }) => {
   );
 };
 
-Customers.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
 const mapStateToProps = (state) => ({
   userId: state.user.user_id,
 });
 
-export default connect(mapStateToProps)(Customers);
+export default withAuth(connect(mapStateToProps)(Jobs));

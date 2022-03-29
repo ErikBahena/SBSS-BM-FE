@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosWithAuth } from "../utils";
+import { axiosWithAuth, decodeJWT } from "../utils";
 
 export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
@@ -25,9 +25,20 @@ export const access = (userInfo, successCallback, type, setErrors) => {
 
         console.error(err.response.data);
 
-        setErrors({ [type]: message });
+        if (setErrors) setErrors({ [type]: message });
         dispatch(fetchError());
       });
+  };
+};
+
+export const reloadByToken = (token) => {
+  return async (dispatch) => {
+    const decodedToken = decodeJWT(token);
+
+    axios.post(`http://localhost:8080/api/auth/reload`, decodedToken).then((res) => {
+      dispatch(loginSuccess(res.data));
+      console.log(res.data);
+    });
   };
 };
 

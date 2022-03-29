@@ -1,7 +1,8 @@
 import { getUserEmployees, addEmployee, deleteEmployeeQFN } from "src/fetch-functions";
-import { DashboardLayout } from "src/components/dashboard-layout";
 
 import EmployeePage from "../components/client-employee/index";
+
+import withAuth from "src/components/auth/with-auth";
 
 const Employees = () => {
   return (
@@ -15,6 +16,4 @@ const Employees = () => {
   );
 };
 
-Employees.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
-export default Employees;
+export default withAuth(Employees);

@@ -1,7 +1,8 @@
 import { addClient, getUserClients, deleteClientQFN } from "src/fetch-functions";
-import { DashboardLayout } from "src/components/dashboard-layout";
 
 import ClientPage from "../components/client-employee/index";
+
+import withAuth from "src/components/auth/with-auth";
 
 const Clients = () => {
   return (
@@ -15,6 +16,4 @@ const Clients = () => {
   );
 };
 
-Clients.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
-export default Clients;
+export default withAuth(Clients);

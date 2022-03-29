@@ -1,4 +1,7 @@
 import axios from "axios";
+
+import jwt_decode from "jwt-decode";
+
 import { BACKEND_URL } from "src/config";
 
 export const axiosWithAuth = () => {
@@ -10,6 +13,22 @@ export const axiosWithAuth = () => {
     },
     baseURL: BACKEND_URL,
   });
+};
+
+export const decodeJWT = (jwt) => {
+  return jwt_decode(jwt);
+};
+
+export const storage = {
+  getToken: () => {
+    if (typeof window !== "undefined") return localStorage.getItem("token");
+  },
+  setToken: (token) => {
+    if (typeof window !== "undefined") localStorage.setItem("token", token);
+  },
+  clearToken: () => {
+    if (typeof window !== "undefined") localStorage.removeItem("token");
+  },
 };
 
 export const getInitials = (name = "") =>

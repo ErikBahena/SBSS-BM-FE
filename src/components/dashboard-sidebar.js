@@ -47,9 +47,9 @@ const items = [
     title: "Settings",
   },
   {
-    href: "/404",
+    href: "/signout",
     icon: <XCircleIcon fontSize="small" />,
-    title: "Error",
+    title: "Sign Out",
   },
 ];
 

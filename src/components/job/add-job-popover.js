@@ -27,7 +27,7 @@ import DropDownSelect from "./employee-menu";
 import NextLink from "next/link";
 import { Users as UsersIcon } from "../../icons/users";
 
-const AddJobPopover = ({ anchorEl, userId, refetchJobs }) => {
+const AddJobPopover = ({  userId, refetchJobs }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { isLoading: getClientsLoading, data: clients = [] } = useQuery(`clients`, () =>

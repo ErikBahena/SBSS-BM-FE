@@ -1,4 +1,5 @@
 import React from "react";
+import NextLink from "next/link";
 
 import { connect } from "react-redux";
 import { useMutation } from "react-query";
@@ -7,11 +8,12 @@ import { deleteJobEmployeeQFN, addJobEmployeeQFN, deleteJobQFN } from "src/fetch
 import { format } from "date-fns";
 import { getInitials, capitalizeName } from "../../utils";
 
-import { Box, Grid, Card, Typography, Avatar, CardContent, Link } from "@mui/material";
+import { Box, Grid, Card, Typography, Avatar, CardContent, Link, Button } from "@mui/material";
 
 import EventIcon from "@mui/icons-material/Event";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import { Users as UsersIcon } from "../../icons/users";
 
 import EmployeeMenu from "../job/employee-menu";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
@@ -53,9 +55,10 @@ const JobCard = ({ job, refetchJobs }) => {
               title="Delete this job?"
               onConfirm={() => deleteJob(job.job_id)}
             >
-              Are you sure you want to remove job: <b>{capitalizeName(job.title)}</b> 
+              Are you sure you want to remove job: <b>{capitalizeName(job.title)}</b>
               <br />
-              This action can't be undone and all employee labor regarding this job will be lost, lost forever ♾
+              This action can't be undone and all employee labor regarding this job will be lost,
+              lost forever ♾
             </ConfirmDeletionDialog>
           </Box>
 
@@ -117,6 +120,7 @@ const JobCard = ({ job, refetchJobs }) => {
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
               </Typography>
+
               {job.excluded_employees.length ? (
                 <EmployeeMenu
                   data={job.excluded_employees}
@@ -126,7 +130,23 @@ const JobCard = ({ job, refetchJobs }) => {
                   isLoading={addEmployeeLoading}
                   asyncAdd={true}
                 />
-              ) : null}
+              ) : (
+                <Box >
+                  <NextLink href="/employees" passHref>
+                    <Button
+                      color="secondary"
+                      component="a"
+                      endIcon={<UsersIcon />}
+                      fullWidth
+                      sx={{ mt: 2 }}
+                      variant="contained"
+                      size="sizeSmall"
+                    >
+                      Employees Page
+                    </Button>
+                  </NextLink>
+                </Box>
+              )}
             </Box>
           </Grid>
 
@@ -164,7 +184,10 @@ const JobCard = ({ job, refetchJobs }) => {
             })
           ) : (
             <NothingHereCard>
-              Add a new employee to this job from the <b>Add an Employee</b> drop down menu above
+              {job.excluded_employees.length
+                ? "Add a new employee to this job from the Add an Employee drop down menu above"
+                : ` You have no registered employees, go to the employees page and register a new 
+                    Employee`}
             </NothingHereCard>
           )}
         </Grid>

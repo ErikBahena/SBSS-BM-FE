@@ -1,5 +1,14 @@
 import { axiosWithAuth } from "../utils";
 
+// user crud functions
+export const updateUserPassword = async ({ user_id, email, newPassword, password }) => {
+  return await axiosWithAuth().put(`/auth/update-password/${user_id}`, {
+    email,
+    newPassword,
+    password,
+  });
+};
+
 // user client crud functions
 export const getUserClients = async (user_id) => {
   const { data } = await axiosWithAuth().get(`/client/getAll/${user_id}`);

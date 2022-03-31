@@ -13,8 +13,10 @@ export const access = (userInfo, successCallback, type, setErrors) => {
   return async (dispatch) => {
     dispatch(fetchStart());
 
+    console.log(BACKEND_URL)
+
     axios
-      .post(`${BACKEND_URL}/${type}`, userInfo)
+      .post(`${BACKEND_URL}/auth/${type}`, userInfo)
       .then((res) => {
         dispatch(loginSuccess(res.data));
 

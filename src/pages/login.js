@@ -13,12 +13,17 @@ import { Box, Button, Container, Grid, Link, TextField, Typography } from "@mui/
 import { Facebook as FacebookIcon } from "../icons/facebook";
 import { Google as GoogleIcon } from "../icons/google";
 
+const guestCredentials = {
+  email: "guest@gmail.com",
+  password: "guestPassword!!221",
+};
+
 const SignIn = ({ dispatch, isLoading }) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: "guest@gmail.com",
-      password: "guestPassword!!221",
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
@@ -45,15 +50,15 @@ const SignIn = ({ dispatch, isLoading }) => {
       >
         <Container maxWidth="sm">
           <form onSubmit={formik.handleSubmit}>
-            <Box sx={{ my: 3 }}>
-              <Typography color="textPrimary" variant="h4">
+            <Box>
+              <Typography color="textPrimary" variant="h4" sx={{ mb: 1 }}>
                 Sign in
               </Typography>
-              <Typography color="textSecondary" gutterBottom variant="body2">
+              {/* <Typography color="textSecondary" gutterBottom variant="body2">
                 Sign in with Oauth
-              </Typography>
+              </Typography> */}
             </Box>
-            <Grid container spacing={3}>
+            {/* <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Button
                   color="info"
@@ -82,13 +87,13 @@ const SignIn = ({ dispatch, isLoading }) => {
             <Box
               sx={{
                 pb: 1,
-                pt: 3,
+                pt: 0,
               }}
             >
               <Typography align="center" color="textSecondary" variant="body1">
-                or sign in with email address
+                sign in with email address
               </Typography>
-            </Box>
+            </Box> */}
             <TextField
               error={Boolean(formik.touched.email && formik.errors.email)}
               fullWidth
@@ -142,6 +147,18 @@ const SignIn = ({ dispatch, isLoading }) => {
                   Sign Up
                 </Link>
               </NextLink>
+              {" | "}
+              <Link
+                variant="subtitle2"
+                component="button"
+                underline="hover"
+                onClick={() => dispatch(access(guestCredentials, () => router.push("/"), "login"))}
+                sx={{
+                  cursor: "pointer",
+                }}
+              >
+                Guest Account
+              </Link>
             </Typography>
           </form>
         </Container>

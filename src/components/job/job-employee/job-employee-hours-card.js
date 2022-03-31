@@ -55,7 +55,6 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
     }
   );
 
-
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -120,9 +119,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                 />
 
                 {!employeeLabor.length && employeeLaborStatus === "success" && (
-                  <NothingHereCard maxWidth={275}>
-                    Add some work to the right!
-                  </NothingHereCard>
+                  <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>
                 )}
               </Grid>
               <Grid item xs={12} md={4}>

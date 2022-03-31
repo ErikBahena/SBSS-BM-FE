@@ -149,7 +149,7 @@ export const DashboardSidebar = (props) => {
           <Typography color="neutral.100" variant="subtitle2">
             Need more features?
           </Typography>
-        
+
           <NextLink href="mailto:erikjbahena@gmail.com" passHref>
             <Button
               color="secondary"

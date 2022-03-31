@@ -57,8 +57,8 @@ const JobCard = ({ job, refetchJobs }) => {
             >
               Are you sure you want to remove job: <b>{capitalizeName(job.title)}</b>
               <br />
-              This action can't be undone and all employee labor regarding this job will be lost,
-              lost forever ♾
+              This action can&apos;t be undone and all employee labor regarding this job will be
+              lost, lost forever ♾
             </ConfirmDeletionDialog>
           </Box>
 
@@ -131,7 +131,7 @@ const JobCard = ({ job, refetchJobs }) => {
                   asyncAdd={true}
                 />
               ) : (
-                <Box >
+                <Box>
                   <NextLink href="/employees" passHref>
                     <Button
                       color="secondary"

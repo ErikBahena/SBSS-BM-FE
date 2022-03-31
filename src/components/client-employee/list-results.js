@@ -47,8 +47,8 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
       {data && !!data.length && (
         <Card>
           <PerfectScrollbar>
-            <TableContainer >
-              <Table sx={{ maxHeight: { xs: 300, md: 500 }, minHeight: { xs: 250, sm: 300 } }}> 
+            <TableContainer>
+              <Table sx={{ maxHeight: { xs: 300, md: 500 }, minHeight: { xs: 250, sm: 300 } }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
@@ -107,8 +107,9 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                               {el.first_name} {el.last_name}
                             </b>
                             <br />
-                            This can't be undone and is not recommended. All information regarding
-                            this {type} will be lost forever including any relations in the jobs tab
+                            This can&apos;t be undone and is not recommended. All information
+                            regarding this {type} will be lost forever including any relations in
+                            the jobs tab
                           </ConfirmDeletionDialog>
                         </TableCell>
                       </TableRow>

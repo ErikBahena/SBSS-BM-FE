@@ -27,7 +27,7 @@ import DropDownSelect from "./employee-menu";
 import NextLink from "next/link";
 import { Users as UsersIcon } from "../../icons/users";
 
-const AddJobPopover = ({  userId, refetchJobs }) => {
+const AddJobPopover = ({ userId, refetchJobs }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { isLoading: getClientsLoading, data: clients = [] } = useQuery(`clients`, () =>
@@ -143,7 +143,8 @@ const AddJobPopover = ({  userId, refetchJobs }) => {
                 {clients.length < 1 && (
                   <Grid item xs={12}>
                     <Typography variant="subtitle2faded">
-                      You have no registered clients. Please go to the clients page and register a new client
+                      You have no registered clients. Please go to the clients page and register a
+                      new client
                     </Typography>
                     <NextLink href="/clients" passHref>
                       <Button

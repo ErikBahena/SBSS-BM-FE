@@ -88,7 +88,10 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
                       </TableCell>
 
                       <TableCell>
-                        <EditEmployeeHoursPopover refetchEmployeeLabor={refetchEmployeeLabor} employeeLaborData={el}/>
+                        <EditEmployeeHoursPopover
+                          refetchEmployeeLabor={refetchEmployeeLabor}
+                          employeeLaborData={el}
+                        />
                       </TableCell>
 
                       <TableCell>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { axiosWithAuth, decodeJWT } from "../utils";
+import { BACKEND_URL } from "src/config";
 
 export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
@@ -13,7 +14,7 @@ export const access = (userInfo, successCallback, type, setErrors) => {
     dispatch(fetchStart());
 
     axios
-      .post(`http://localhost:8080/api/auth/${type}`, userInfo)
+      .post(`${BACKEND_URL}/${type}`, userInfo)
       .then((res) => {
         dispatch(loginSuccess(res.data));
 
@@ -35,7 +36,7 @@ export const reloadByToken = (token) => {
   return async (dispatch) => {
     const decodedToken = decodeJWT(token);
 
-    axios.post(`http://localhost:8080/api/auth/reload`, decodedToken).then((res) => {
+    axios.post(`${BACKEND_URL}/auth/reload`, decodedToken).then((res) => {
       dispatch(loginSuccess(res.data));
       console.log(res.data);
     });

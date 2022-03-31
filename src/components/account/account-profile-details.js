@@ -34,7 +34,7 @@ const AccountProfileDetails = ({ user, dispatch, isLoading }) => {
       phone: Yup.string().matches(phoneRegExp, "invalid phone number").required("can't be blank"),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      dispatch(updateUser(formValues, () => console.log("ss called"), setErrors));
+      dispatch(updateUser(formValues));
     },
   });
 

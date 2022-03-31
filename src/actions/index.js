@@ -13,8 +13,6 @@ export const access = (userInfo, successCallback, type, setErrors) => {
   return async (dispatch) => {
     dispatch(fetchStart());
 
-    console.log(BACKEND_URL)
-
     axios
       .post(`${BACKEND_URL}/auth/${type}`, userInfo)
       .then((res) => {
@@ -26,8 +24,6 @@ export const access = (userInfo, successCallback, type, setErrors) => {
         const type = err.response.data.type;
         const message = err.response.data.message;
 
-        console.error(err.response.data);
-
         if (setErrors) setErrors({ [type]: message });
         dispatch(fetchError());
       });
@@ -38,14 +34,15 @@ export const reloadByToken = (token) => {
   return async (dispatch) => {
     const decodedToken = decodeJWT(token);
 
-    axios.post(`${BACKEND_URL}/auth/reload`, decodedToken).then((res) => {
-      dispatch(loginSuccess(res.data));
-      console.log(res.data);
-    });
+    axiosWithAuth()
+      .post("/auth/reload", decodedToken)
+      .then((res) => {
+        dispatch(loginSuccess(res.data));
+      });
   };
 };
 
-export const updateUser = (updatedInfo, successCallback, setErrors) => {
+export const updateUser = (updatedInfo) => {
   return async (dispatch, getState) => {
     const { user } = getState();
 
@@ -53,12 +50,8 @@ export const updateUser = (updatedInfo, successCallback, setErrors) => {
 
     axiosWithAuth()
       .put(`/user/${user.user_id}/${user.address.user_address_id}`, updatedInfo)
-      .then((res) => {
-        // // if (successCallback) successCallback();
-
-        dispatch(updateUserSuccess(res.data));
-      })
-      .catch((err) => console.log(err.response));
+      .then((res) => dispatch(updateUserSuccess(res.data)))
+      .catch((err) => console.log(err));
   };
 };
 

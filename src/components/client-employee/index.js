@@ -32,9 +32,7 @@ const Root = ({
     refetch: refetchMainResource,
   } = useQuery(`${type}s`, () => mainResourceFunc(userId));
 
-  const [orderedData, handleSearch, searchTerm, setData] = useSearch("", data, clientSearchKeys);
-
-  useEffect(() => data.length && setData(data), [data]);
+  const [orderedData, handleSearch, searchTerm] = useSearch("", data, clientSearchKeys);
 
   return (
     <>

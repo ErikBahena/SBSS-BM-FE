@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import fuzzysort from "fuzzysort";
 
 export const useSearch = (initialSearchVal, initialData, searchKeys) => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData || []);
   const [searchTerm, setSearchTerm] = useState(initialSearchVal);
+
+  useEffect(() => initialData && setData(initialData), [initialData]);
 
   const handleSearch = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);

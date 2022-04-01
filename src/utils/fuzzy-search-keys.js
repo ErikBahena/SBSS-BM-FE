@@ -7,3 +7,12 @@ export const clientSearchKeys = [
   "address.state",
   "phone",
 ];
+
+export const jobSearchKeys = [
+  "title",
+  "description",
+  "client.first_name",
+  "client.last_name",
+  "client.email",
+  "client.phone",
+];

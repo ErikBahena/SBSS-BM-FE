@@ -3,6 +3,8 @@ import Head from "next/head";
 import { connect } from "react-redux";
 import { useQuery } from "react-query";
 import { getUserJobs } from "src/fetch-functions";
+import { jobSearchKeys } from "src/utils/fuzzy-search-keys";
+import { useSearch } from "src/hooks";
 
 import { Box, Container, Grid } from "@mui/material";
 
@@ -14,6 +16,8 @@ import withAuth from "src/components/auth/with-auth";
 
 const Jobs = ({ userId }) => {
   const { data, status, refetch: refetchJobs } = useQuery("jobs", () => getUserJobs(userId));
+
+  const [filteredJobs, handleSearch, searchTerm] = useSearch("", data, jobSearchKeys);
 
   return (
     <>
@@ -28,11 +32,15 @@ const Jobs = ({ userId }) => {
         }}
       >
         <Container maxWidth={false}>
-          <JobListToolbar refetchJobs={refetchJobs} />
+          <JobListToolbar
+            refetchJobs={refetchJobs}
+            handleSearch={handleSearch}
+            searchTerm={searchTerm}
+          />
 
           {status === "success" && data && (
             <Grid container spacing={2} mt={3}>
-              {data.map((job, i) => {
+              {filteredJobs.map((job, i) => {
                 return (
                   <Grid item key={i}>
                     <JobCard job={job} refetchJobs={refetchJobs} />

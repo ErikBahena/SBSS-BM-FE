@@ -10,7 +10,7 @@ import {
 import { Search as SearchIcon } from "../../icons/search";
 import AddJobPopover from "./add-job-popover";
 
-export const JobListToolbar = ({ refetchJobs }) => (
+export const JobListToolbar = ({ refetchJobs, handleSearch, searchTerm }) => (
   <Box>
     <Box
       sx={{
@@ -34,6 +34,7 @@ export const JobListToolbar = ({ refetchJobs }) => (
           <Box sx={{ maxWidth: 500 }}>
             <TextField
               fullWidth
+              onChange={(e) => handleSearch(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -43,7 +44,8 @@ export const JobListToolbar = ({ refetchJobs }) => (
                   </InputAdornment>
                 ),
               }}
-              placeholder="Search job"
+              value={searchTerm}
+              placeholder="Search Jobs"
               variant="outlined"
             />
           </Box>

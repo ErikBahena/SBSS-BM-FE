@@ -11,7 +11,7 @@ import { Search as SearchIcon } from "../../icons/search";
 import AddJobPopover from "./add-job-popover";
 
 export const JobListToolbar = ({ refetchJobs, handleSearch, searchTerm }) => (
-  <Box>
+  <>
     <Box
       sx={{
         alignItems: "center",
@@ -28,29 +28,28 @@ export const JobListToolbar = ({ refetchJobs, handleSearch, searchTerm }) => (
         <AddJobPopover refetchJobs={refetchJobs} />
       </Box>
     </Box>
-    <Box sx={{ mt: 3 }}>
-      <Card>
-        <CardContent>
-          <Box sx={{ maxWidth: 500 }}>
-            <TextField
-              fullWidth
-              onChange={(e) => handleSearch(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SvgIcon color="action" fontSize="small">
-                      <SearchIcon />
-                    </SvgIcon>
-                  </InputAdornment>
-                ),
-              }}
-              value={searchTerm}
-              placeholder="Search Jobs"
-              variant="outlined"
-            />
-          </Box>
-        </CardContent>
-      </Card>
-    </Box>
-  </Box>
+
+    <Card sx={{ mt: 3 }}>
+      <CardContent>
+        <Box>
+          <TextField
+            fullWidth
+            onChange={(e) => handleSearch(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SvgIcon color="action" fontSize="small">
+                    <SearchIcon />
+                  </SvgIcon>
+                </InputAdornment>
+              ),
+            }}
+            value={searchTerm}
+            placeholder="Search Jobs"
+            variant="outlined"
+          />
+        </Box>
+      </CardContent>
+    </Card>
+  </>
 );

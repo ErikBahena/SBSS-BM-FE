@@ -7,7 +7,6 @@ import { deleteJobEmployeeLaborQFN } from "../../../fetch-functions";
 
 import {
   Card,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -17,8 +16,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
-import { EditOutlined } from "@mui/icons-material";
 
 import ConfirmDeletionDialog from "../../confirm-deletion-dialog";
 import EditEmployeeHoursPopover from "./edit-employee-hours";
@@ -52,7 +49,8 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.slice(page * limit, page * limit + limit).map((el) => {
+                {data.slice(page * limit, page * limit + limit).map((el, i) => {
+                  const isLast = data.length - 1 === i;
                   const diff = new Date(el.end) - new Date(el.start);
                   const diffDate = new Date(diff);
                   const hours = diffDate.getUTCHours().toString();
@@ -78,7 +76,6 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
                         <Typography
                           variant="p"
                           sx={{
-                            maxWidth: "150px",
                             display: "inline-block",
                             overflow: "auto",
                           }}

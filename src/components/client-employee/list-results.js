@@ -48,7 +48,7 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
         <Card>
           <PerfectScrollbar>
             <TableContainer>
-              <Table sx={{ maxHeight: { xs: 300, md: 500 }, minHeight: { xs: 250, sm: 300 } }}>
+              <Table sx={{ maxHeight: { xs: 300, md: 500 } }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>

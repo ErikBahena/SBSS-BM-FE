@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { capitalizeName } from "src/utils";
 import PropTypes from "prop-types";
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
@@ -55,6 +57,10 @@ const items = [
 
 export const DashboardSidebar = (props) => {
   const { open, onClose } = props;
+  const usersName = useSelector((state) =>
+    capitalizeName(`${state.user.first_name} ${state.user.last_name}`)
+  );
+  
   const router = useRouter();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
@@ -112,10 +118,10 @@ export const DashboardSidebar = (props) => {
             >
               <div>
                 <Typography color="inherit" variant="subtitle1">
-                  Acme Inc
+                  {usersName}
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
-                  Your tier : Premium
+                  Your Tier: Free
                 </Typography>
               </div>
               <SelectorIcon

@@ -29,6 +29,7 @@ export const SettingsPassword = ({ email }) => {
   const [newPwVisible, setNewPwVisibility] = useState(false);
 
   const [pwUpdateSuccess, setPwUpdateSuccess] = useState(false);
+  const [pwUpdateFail, setPwUpdateFail] = useState(false);
 
   const user_id = useSelector((state) => state.user.user_id);
 
@@ -47,6 +48,10 @@ export const SettingsPassword = ({ email }) => {
 
         if (errResponse.type === "password")
           formik.setFieldError(errResponse.type, errResponse.message);
+        else {
+          setPwUpdateFail(true);
+          formik.resetForm();
+        }
       },
     }
   );
@@ -72,6 +77,12 @@ export const SettingsPassword = ({ email }) => {
       {pwUpdateSuccess && (
         <Alert severity="success" sx={{ mb: 3 }}>
           Your password was successfully updated!
+        </Alert>
+      )}
+
+      {pwUpdateFail && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          Something went wrong 🫤
         </Alert>
       )}
 

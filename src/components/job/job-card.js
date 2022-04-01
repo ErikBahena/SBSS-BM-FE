@@ -80,42 +80,37 @@ const JobCard = ({ job, refetchJobs }) => {
               Client
             </Typography>
 
-            <Box display="flex" alignItems="center">
-              <Avatar sx={{ mr: 1.5, display: { xs: "none", sm: "" } }}>
-                {getInitials(`${job.client.first_name} ${job.client.last_name}`)}
-              </Avatar>
+            <Box>
+              <Typography sx={{ mb: { xs: 1, sm: 0 } }} variant="h6">
+                {capitalizeName(`${job.client.first_name} ${job.client.last_name}`)}
+              </Typography>
 
-              <Box>
-                <Typography sx={{ mb: { xs: 0, sm: 0.3 } }} variant="h6">
-                  {capitalizeName(`${job.client.first_name} ${job.client.last_name}`)}
-                </Typography>
+              <Box display="flex" flexWrap="wrap" sx={{ gap: { xs: 1, sm: 0 } }}>
+                <Box display="flex" alignItems="center" sx={{ mr: 1 }}>
+                  <EmailOutlinedIcon sx={{ mr: 0.6 }} />
+                  <Typography variant="body1">
+                    <Link
+                      underline="hover"
+                      color="inherit"
+                      rel="noopener noreferrer"
+                      target="_top"
+                      href={`mailto:${job.client.email}`}
+                      variant="body1"
+                    >
+                      {job.client.email}
+                    </Link>
+                  </Typography>
+                </Box>
 
-                <Box display="flex" flexWrap="wrap">
-                  <Box display="flex" alignItems="center" sx={{ mr: 1 }}>
-                    <EmailOutlinedIcon sx={{ mr: 0.6 }} />
-                    <Typography variant="body1">
-                      <Link
-                        underline="hover"
-                        color="inherit"
-                        rel="noopener noreferrer"
-                        target="_top"
-                        href={`mailto:${job.client.email}`}
-                      >
-                        {job.client.email}
-                      </Link>
-                    </Typography>
-                  </Box>
-
-                  <Box display="flex" alignItems="center">
-                    <LocalPhoneOutlinedIcon sx={{ mr: 0.6 }} />
-                    <Typography variant="body1">{job.client.phone}</Typography>
-                  </Box>
+                <Box display="flex" alignItems="center">
+                  <LocalPhoneOutlinedIcon sx={{ mr: 0.6 }} />
+                  <Typography variant="body1">{job.client.phone}</Typography>
                 </Box>
               </Box>
             </Box>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ mt: 1 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
               <Typography variant="overline" sx={{ color: "rgba(0, 0, 0, 0.5)" }}>
                 Employees
@@ -157,7 +152,7 @@ const JobCard = ({ job, refetchJobs }) => {
               );
 
               return (
-                <Grid item xs={12} key={i}>
+                <Grid item xs={12} key={i} sx={{ mt: { xs: 1, sm: 0 } }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box display="flex" alignItems="center" gap={1}>
                       <Avatar>{getInitials(`${employee.first_name} ${employee.last_name}`)}</Avatar>
@@ -183,7 +178,7 @@ const JobCard = ({ job, refetchJobs }) => {
               );
             })
           ) : (
-            <NothingHereCard>
+            <NothingHereCard sx={{ mt: 3 }}>
               {job.excluded_employees.length
                 ? "Add a new employee to this job from the Add an Employee drop down menu above"
                 : ` You have no registered employees, go to the employees page and register a new 

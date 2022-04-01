@@ -2,9 +2,9 @@ import React from "react";
 
 import { Card, Typography, CardActionArea, CardMedia, CardContent } from "@mui/material";
 
-export default function NothingHereCard({ children, maxWidth = 325 }) {
+export default function NothingHereCard({ children, maxWidth = 325, sx: propSx = {} }) {
   return (
-    <Card sx={{ maxWidth: maxWidth, pointerEvents: "none" }}>
+    <Card sx={{ maxWidth: maxWidth, pointerEvents: "none", ...propSx }}>
       <CardActionArea>
         <CardMedia
           component="img"

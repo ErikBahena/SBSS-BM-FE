@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { format } from "date-fns";
+import { timeDiff } from "src/utils";
 import { v4 as uuid } from "uuid";
 
 import { useMutation } from "react-query";
@@ -50,13 +51,7 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
               </TableHead>
               <TableBody>
                 {data.slice(page * limit, page * limit + limit).map((el, i) => {
-                  const isLast = data.length - 1 === i;
-                  const diff = new Date(el.end) - new Date(el.start);
-                  const diffDate = new Date(diff);
-                  const hours = diffDate.getUTCHours().toString();
-                  const minutes = diffDate.getMinutes().toString();
-
-                  if (minutes.length === 1) minutes = `0${minutes}`;
+                  const totalDiff = timeDiff(new Date(el.end), new Date(el.start), false, true);
 
                   return (
                     <TableRow hover key={uuid()}>
@@ -70,7 +65,8 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
                         {format(new Date(el.end), "h:mm a")}
                       </TableCell>
 
-                      <TableCell>{`${hours}:${minutes}`}</TableCell>
+                      <TableCell>{totalDiff}</TableCell>
+                      {/* <TableCell>{`${hours}:${minutes}`}</TableCell> */}
 
                       <TableCell>
                         <Typography

@@ -38,7 +38,7 @@ export const reloadByToken = (token) => {
       .post("/auth/reload", decodedToken)
       .then((res) => {
         dispatch(loginSuccess(res.data));
-      });
+      }).catch(err => console.log(err))
   };
 };
 

@@ -46,7 +46,7 @@ export const capitalizeName = (name = "") =>
     .map((v) => v[0].toUpperCase() + v.slice(1))
     .join(" ");
 
-export const timeDiff = (dateFuture, dateNow, includeDays, trim) => {
+export const timeDiff = (dateFuture, dateNow, includeDays, trim, raw = false) => {
   let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;
 
   // calculate days
@@ -63,6 +63,9 @@ export const timeDiff = (dateFuture, dateNow, includeDays, trim) => {
 
   if (!includeDays) hours += days * 24;
 
+  if (raw && !includeDays) return { hours, minutes };
+  if (raw && includeDays) return { days, hours, minutes };
+
   let difference = "";
 
   if (includeDays) difference += days == 0 && trim ? "" : `${days}d `;
@@ -72,4 +75,36 @@ export const timeDiff = (dateFuture, dateNow, includeDays, trim) => {
   difference += minutes == 0 && trim ? "" : `${minutes}m`;
 
   return difference;
+};
+
+export const minsToHrsAndMins = (mins) => {
+  const hours = mins / 60;
+  const rhours = Math.floor(hours);
+  const minutes = (hours - rhours) * 60;
+  const rminutes = Math.round(minutes);
+
+  return { rhours, rminutes };
+};
+
+export const calcEmployeeLaborTotal = (laborHours) => {
+  let totalHrs = 0;
+  let totalMins = 0;
+
+  if (!laborHours.length) return { hours: 0, minutes: 0 };
+
+  for (const labor of laborHours) {
+    const end = new Date(labor.end);
+    const start = new Date(labor.start);
+    const { hours, minutes } = timeDiff(end, start, false, false, true);
+    totalHrs += hours;
+    totalMins += minutes;
+  }
+
+  if (totalMins >= 60) {
+    const { rhours, rminutes } = minsToHrsAndMins(totalMins);
+    totalHrs += rhours;
+    totalMins = rminutes;
+  }
+
+  return { hours: totalHrs, minutes: totalMins };
 };

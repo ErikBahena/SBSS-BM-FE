@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 import { useMutation, useQuery } from "react-query";
@@ -20,7 +20,6 @@ import {
   Tooltip,
   IconButton,
   Typography,
-  FormLabel,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
@@ -28,11 +27,9 @@ import { GeneralListResults } from "./general-list-results";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import NothingHereCard from "../../nothing-here-card";
-import {
-  addJobEmployeeLaborQFN,
-  getJobEmployeeLaborQFN,
-  editJobEmployeeLaborQFN,
-} from "src/fetch-functions";
+import { addJobEmployeeLaborQFN, getJobEmployeeLaborQFN } from "src/fetch-functions";
+
+import { calcEmployeeLaborTotal } from "src/utils";
 
 const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -47,6 +44,8 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   } = useQuery(`employee_labor${jobEmployeeId}`, () => getJobEmployeeLaborQFN(jobEmployeeId), {
     enabled: false,
   });
+
+  useEffect(() => Boolean(anchorEl) && !employeeLabor.length && refetchEmployeeLabor(), [anchorEl]);
 
   const { isLoading: addLaborLoading, mutate: addEmployeeLaborMutate } = useMutation(
     addJobEmployeeLaborQFN,
@@ -74,17 +73,12 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
     },
   });
 
+  const laborTotals = calcEmployeeLaborTotal(employeeLabor);
+
   return (
     <>
       <Tooltip title="Edit Employee Hours">
-        <IconButton
-          onClick={(e) => {
-            refetchEmployeeLabor();
-            setAnchorEl(e.target);
-          }}
-          sx={{ ml: 1 }}
-          color="info"
-        >
+        <IconButton onClick={(e) => setAnchorEl(e.target)} sx={{ ml: 1 }} color="info">
           <EditOutlinedIcon />
         </IconButton>
       </Tooltip>
@@ -122,6 +116,7 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                   <NothingHereCard maxWidth={275}>Add some work to the right!</NothingHereCard>
                 )}
               </Grid>
+
               <Grid item xs={12} md={4}>
                 <Typography sx={{ py: 3 }}>Add Hours</Typography>
 
@@ -189,6 +184,14 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                     </LoadingButton>
                   </Box>
                 </form>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Typography variant="overline" fontSize={14}>
+                  Labor Totals
+                </Typography>
+                <Divider />
+                {`${laborTotals.hours} hour(s)`} {`${laborTotals.minutes} minute(s)`}
               </Grid>
             </Grid>
           </CardContent>

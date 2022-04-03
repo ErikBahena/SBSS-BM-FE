@@ -152,7 +152,10 @@ const SignIn = ({ dispatch, isLoading }) => {
                 variant="subtitle2"
                 component="button"
                 underline="hover"
-                onClick={() => dispatch(access(guestCredentials, () => router.push("/"), "login"))}
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(access(guestCredentials, () => router.push("/"), "login"));
+                }}
                 sx={{
                   cursor: "pointer",
                 }}

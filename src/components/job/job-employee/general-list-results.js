@@ -51,7 +51,13 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
               </TableHead>
               <TableBody>
                 {data.slice(page * limit, page * limit + limit).map((el, i) => {
-                  const totalDiff = timeDiff(new Date(el.endDateTime), new Date(el.startDateTime), false, true);
+                  console.log(el, "IN PROD VIEW");
+                  const totalDiff = timeDiff(
+                    new Date(el.endDateTime),
+                    new Date(el.startDateTime),
+                    false,
+                    true
+                  );
 
                   return (
                     <TableRow hover key={uuid()}>

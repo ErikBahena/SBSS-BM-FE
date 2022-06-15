@@ -51,18 +51,18 @@ export const GeneralListResults = ({ data = [], refetchEmployeeLabor }) => {
               </TableHead>
               <TableBody>
                 {data.slice(page * limit, page * limit + limit).map((el, i) => {
-                  const totalDiff = timeDiff(new Date(el.end), new Date(el.start), false, true);
+                  const totalDiff = timeDiff(new Date(el.endDateTime), new Date(el.startDateTime), false, true);
 
                   return (
                     <TableRow hover key={uuid()}>
                       <TableCell>
-                        {format(new Date(el.start), "MM/dd/yyyy")} <br />
-                        {format(new Date(el.start), "h:mm a")}
+                        {format(new Date(el.startDateTime), "MM/dd/yyyy")} <br />
+                        {format(new Date(el.startDateTime), "h:mm a")}
                       </TableCell>
 
                       <TableCell>
-                        {format(new Date(el.end), "MM/dd/yyyy")} <br />
-                        {format(new Date(el.end), "h:mm a")}
+                        {format(new Date(el.endDateTime), "MM/dd/yyyy")} <br />
+                        {format(new Date(el.endDateTime), "h:mm a")}
                       </TableCell>
 
                       <TableCell>{totalDiff}</TableCell>

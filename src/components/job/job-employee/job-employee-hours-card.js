@@ -30,6 +30,7 @@ import NothingHereCard from "../../nothing-here-card";
 import { addJobEmployeeLaborQFN, getJobEmployeeLaborQFN } from "src/fetch-functions";
 
 import { calcEmployeeLaborTotal } from "src/utils";
+import LaborTotalsByRange from "./labor-totals-by-range";
 
 const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,13 +58,13 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
   const formik = useFormik({
     initialValues: {
       description: "",
-      start: defaultDateValue,
-      end: defaultDateValue,
+      startDateTime: defaultDateValue,
+      endDateTime: defaultDateValue,
     },
     validationSchema: Yup.object({
       description: Yup.string().max(255).required("can't be blank"),
-      start: Yup.date().required("must provide a start date"),
-      end: Yup.date().required("must provide a end date"),
+      startDateTime: Yup.date().required("must provide a start date"),
+      endDateTime: Yup.date().required("must provide a end date"),
     }),
     onSubmit: (formValues, { resetForm }) => {
       const newEvent = { ...formValues, job_employee_id: jobEmployeeId };
@@ -124,26 +125,28 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                   <Grid container spacing={2}>
                     <Grid item md={12} xs={12}>
                       <TextField
-                        error={Boolean(formik.touched.start && formik.errors.start)}
-                        helperText={formik.touched.start && formik.errors.start}
+                        error={Boolean(formik.touched.startDateTime && formik.errors.startDateTime)}
+                        helperText={formik.touched.startDateTime && formik.errors.startDateTime}
                         id="datetime-local"
                         label="Start"
                         type="datetime-local"
                         fullWidth
-                        onChange={({ target }) => formik.setFieldValue("start", target.value)}
-                        value={formik.values.start}
+                        onChange={({ target }) =>
+                          formik.setFieldValue("startDateTime", target.value)
+                        }
+                        value={formik.values.startDateTime}
                       />
                     </Grid>
                     <Grid item md={12} xs={12}>
                       <TextField
-                        error={Boolean(formik.touched.end && formik.errors.end)}
-                        helperText={formik.touched.end && formik.errors.end}
+                        error={Boolean(formik.touched.endDateTime && formik.errors.endDateTime)}
+                        helperText={formik.touched.endDateTime && formik.errors.endDateTime}
                         id="datetime-local"
                         label="End"
                         type="datetime-local"
                         fullWidth
-                        value={formik.values.end}
-                        onChange={({ target }) => formik.setFieldValue("end", target.value)}
+                        value={formik.values.endDateTime}
+                        onChange={({ target }) => formik.setFieldValue("endDateTime", target.value)}
                       />
                     </Grid>
                     <Grid item md={12} xs={12}>
@@ -187,11 +190,15 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <Typography variant="overline" fontSize={14}>
-                  Labor Totals
-                </Typography>
-                <Divider />
-                {`${laborTotals.hours} hour(s)`} {`${laborTotals.minutes} minute(s)`}
+                <Box>
+                  <Typography variant="overline" fontSize={14}>
+                    All Time Labor Total
+                  </Typography>
+                  <Divider />
+                  {`${laborTotals.hours} hour(s)`} {`${laborTotals.minutes} minute(s)`}
+                </Box>
+
+                <LaborTotalsByRange jobEmployeeId={jobEmployeeId} />
               </Grid>
             </Grid>
           </CardContent>

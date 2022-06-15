@@ -93,8 +93,8 @@ export const calcEmployeeLaborTotal = (laborHours) => {
   if (!laborHours.length) return { hours: 0, minutes: 0 };
 
   for (const labor of laborHours) {
-    const end = new Date(labor.end);
-    const start = new Date(labor.start);
+    const end = new Date(labor.endDateTime);
+    const start = new Date(labor.startDateTime);
     const { hours, minutes } = timeDiff(end, start, false, false, true);
     totalHrs += hours;
     totalMins += minutes;

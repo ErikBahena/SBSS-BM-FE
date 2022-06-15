@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { format } from "date-fns";
 
 import { useQuery } from "react-query";
-import { getJobEmployeeLaborByRangeQFN } from "src/fetch-functions";
+import { getJobEmployeeLaborTotalsByRangeQFN } from "src/fetch-functions";
 
 import { Box, Typography, Divider, TextField } from "@mui/material";
 
@@ -13,22 +13,15 @@ const LaborTotalsByRange = ({ jobEmployeeId }) => {
   const [startDateTime, setStartDateTime] = useState(defaultDateValue);
   const [endDateTime, setEndDateTime] = useState(defaultDateValue);
 
-  const { isLoading, data, refetch } = useQuery(
-    `employee_labor_by_range${jobEmployeeId}`,
-    () => getJobEmployeeLaborByRangeQFN({ jobEmployeeId, startDateTime, endDateTime }),
+  const { data = { hours: 0, minutes: 0 }, refetch } = useQuery(
+    `employee_labor_totals_by_range${jobEmployeeId}`,
+    () => getJobEmployeeLaborTotalsByRangeQFN({ jobEmployeeId, startDateTime, endDateTime }),
     {
       enabled: false,
     }
   );
 
-  const handleDateChange = (date, type) => {
-    console.log(date, type);
-
-    // setStartDateTime(format(date, "yyyy-MM-dd'T'HH:mm"));
-    // setEndDateTime(format(date, "yyyy-MM-dd'T'HH:mm"));
-  };
-
-  console.log(data, "data");
+  useEffect(() => refetch(), [startDateTime, endDateTime]);
 
   return (
     <Box>
@@ -36,7 +29,6 @@ const LaborTotalsByRange = ({ jobEmployeeId }) => {
         Labor Totals by Range
       </Typography>
       <Divider />
-
       <TextField
         // error={Boolean(formik.touched.startDateTime && formik.errors.startDateTime)}
         // helperText={formik.touched.startDateTime && formik.errors.startDateTime}
@@ -45,6 +37,7 @@ const LaborTotalsByRange = ({ jobEmployeeId }) => {
         fullWidth
         onChange={({ target }) => setStartDateTime(target.value)}
         value={startDateTime}
+        sx={{ my: 2 }}
       />
       <TextField
         // error={Boolean(formik.touched.startDateTime && formik.errors.startDateTime)}
@@ -55,6 +48,8 @@ const LaborTotalsByRange = ({ jobEmployeeId }) => {
         onChange={({ target }) => setEndDateTime(target.value)}
         value={endDateTime}
       />
+      <Divider sx={{ mt: 2 }} />
+      {`${data.hours} hour(s)`} {`${data.minutes} minute(s)`}
     </Box>
   );
 };

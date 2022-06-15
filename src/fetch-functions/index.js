@@ -94,6 +94,19 @@ export const getJobEmployeeLaborByRangeQFN = async (job_employee_id, range) => {
   return data;
 };
 
+export const getJobEmployeeLaborTotalsByRangeQFN = async ({
+  jobEmployeeId,
+  startDateTime,
+  endDateTime,
+}) => {
+  const { data } = await axiosWithAuth().post(
+    `/job/get-employee-labor-totals-by-range/${jobEmployeeId}`,
+    { startDateTime, endDateTime }
+  );
+
+  return data;
+};
+
 export const deleteJobEmployeeLaborQFN = async (job_employee_labor_id) => {
   return await axiosWithAuth().delete(`/job/delete-job-employee-labor/${job_employee_labor_id}`);
 };

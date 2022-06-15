@@ -197,7 +197,8 @@ const JobEmployeeHoursCard = ({ jobEmployeeId }) => {
                   <Divider />
                   {`${laborTotals.hours} hour(s)`} {`${laborTotals.minutes} minute(s)`}
                 </Box>
-
+              </Grid>
+              <Grid item xs={12} md={8}>
                 <LaborTotalsByRange jobEmployeeId={jobEmployeeId} />
               </Grid>
             </Grid>

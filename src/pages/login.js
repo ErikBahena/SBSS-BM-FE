@@ -37,7 +37,7 @@ const SignIn = ({ dispatch, isLoading }) => {
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>SBSS | Log In</title>
       </Head>
       <Box
         component="main"

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useSearch } from "src/hooks";
 import { clientSearchKeys } from "src/utils/fuzzy-search-keys";
@@ -37,7 +37,7 @@ const Root = ({
   return (
     <>
       <Head>
-        <title>{`${capitalizeFirstLetter(type)}`}s</title>
+        <title>SBSS | {`${capitalizeFirstLetter(type)}`}s</title>
       </Head>
       <Box
         component="main"

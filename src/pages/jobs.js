@@ -22,7 +22,7 @@ const Jobs = ({ userId }) => {
   return (
     <>
       <Head>
-        <title>Jobs</title>
+        <title>SBSS | Jobs</title>
       </Head>
       <Box
         component="main"

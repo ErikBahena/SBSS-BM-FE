@@ -9,7 +9,7 @@ import withAuth from "src/components/auth/with-auth";
 const Account = () => (
   <>
     <Head>
-      <title>Account</title>
+      <title>SBSS | Account</title>
     </Head>
     <Box
       component="main"

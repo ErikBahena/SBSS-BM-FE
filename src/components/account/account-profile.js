@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Card, CardContent, Divider, Typography } from "@mui/material";
 
 import { connect } from "react-redux";
 import { getInitials } from "src/utils/get-initials";
@@ -23,16 +14,6 @@ const AccountProfile = ({ user }) => (
           flexDirection: "column",
         }}
       >
-        <Avatar
-          src={user.photo_url}
-          sx={{
-            height: 75,
-            mb: 2,
-            width: 75,
-          }}
-        >
-          {getInitials(`${user.first_name} ${user.last_name}`)}
-        </Avatar>
         <Typography color="textPrimary" gutterBottom variant="h5">
           {capitalizeName(`${user.first_name} ${user.last_name}`)}
         </Typography>

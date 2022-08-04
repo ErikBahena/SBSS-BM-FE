@@ -88,7 +88,7 @@ export const SettingsPassword = ({ email }) => {
 
       <form onSubmit={formik.handleSubmit}>
         <Card>
-          <CardHeader subheader="Update password" title="Password" />
+          <CardHeader subheader="" title="Password" />
           <Divider />
           <CardContent>
             <TextField

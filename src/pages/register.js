@@ -15,6 +15,7 @@ import {
   Checkbox,
   Container,
   FormHelperText,
+  IconButton,
   Link,
   TextField,
   Typography,
@@ -50,7 +51,7 @@ const Register = ({ dispatch, isLoading }) => {
   return (
     <>
       <Head>
-        <title>Register | Material Kit</title>
+        <title>SBSS | Register</title>
       </Head>
       <Box
         component="main"
@@ -62,18 +63,13 @@ const Register = ({ dispatch, isLoading }) => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink href="/" passHref>
-            <Button component="a" startIcon={<ArrowBackIcon fontSize="small" />}>
-              Dashboard
-            </Button>
-          </NextLink>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color="textPrimary" variant="h4">
                 Create a new account
               </Typography>
               <Typography color="textSecondary" gutterBottom variant="body2">
-                Use your email to create a new account
+                use your email to create a new account
               </Typography>
             </Box>
             <TextField

@@ -28,7 +28,6 @@ import { EditOutlined } from "@mui/icons-material";
 
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 
-import { getInitials } from "../../utils/get-initials";
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
 
 const TableCellWithStyle = ({ children, sx: propSx }) => {
@@ -167,20 +166,9 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                       return (
                         <TableRow key={uuid()}>
                           <TableCell>
-                            <Box
-                              sx={{
-                                alignItems: "center",
-                                display: "flex",
-                              }}
-                            >
-                              <Avatar src={el.photo_url} sx={{ mr: 2 }}>
-                                {getInitials(`${el.first_name} ${el.last_name}`)}
-                              </Avatar>
-
-                              <Typography color="textPrimary" variant="body1">
-                                {el.first_name} {el.last_name}
-                              </Typography>
-                            </Box>
+                            <Typography color="textPrimary" variant="body1">
+                              {el.first_name} {el.last_name}
+                            </Typography>
                           </TableCell>
 
                           <TableCell>{el.email}</TableCell>

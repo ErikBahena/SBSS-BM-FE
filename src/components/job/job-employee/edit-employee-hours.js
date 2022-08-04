@@ -35,13 +35,13 @@ const EditEmployeeHoursPopover = ({ refetchEmployeeLabor, employeeLaborData }) =
   const formik = useFormik({
     initialValues: {
       description: employeeLaborData.description,
-      start: employeeLaborData.start,
-      end: employeeLaborData.end,
+      startDateTime: employeeLaborData.startDateTime,
+      endDateTime: employeeLaborData.endDateTime,
     },
     validationSchema: Yup.object({
       description: Yup.string().max(255).required("can't be blank"),
-      start: Yup.date().required("must provide a start date"),
-      end: Yup.date().required("must provide a end date"),
+      startDateTime: Yup.date().required("must provide a start date"),
+      endDateTime: Yup.date().required("must provide a end date"),
     }),
     onSubmit: (formValues, { resetForm }) => {
       const editedEvent = { ...formValues };
@@ -83,26 +83,26 @@ const EditEmployeeHoursPopover = ({ refetchEmployeeLabor, employeeLaborData }) =
               <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                   <TextField
-                    error={Boolean(formik.touched.start && formik.errors.start)}
-                    helperText={formik.touched.start && formik.errors.start}
+                    error={Boolean(formik.touched.startDateTime && formik.errors.startDateTime)}
+                    helperText={formik.touched.startDateTime && formik.errors.start}
                     id="datetime-local"
                     label="Start"
                     type="datetime-local"
                     fullWidth
-                    onChange={({ target }) => formik.setFieldValue("start", target.value)}
-                    value={formik.values.start}
+                    onChange={({ target }) => formik.setFieldValue("startDateTime", target.value)}
+                    value={formik.values.startDateTime}
                   />
                 </Grid>
                 <Grid item md={12} xs={12}>
                   <TextField
-                    error={Boolean(formik.touched.end && formik.errors.end)}
-                    helperText={formik.touched.end && formik.errors.end}
+                    error={Boolean(formik.touched.endDateTime && formik.errors.endDateTime)}
+                    helperText={formik.touched.endDateTime && formik.errors.endDateTime}
                     id="datetime-local"
                     label="End"
                     type="datetime-local"
                     fullWidth
-                    value={formik.values.end}
-                    onChange={({ target }) => formik.setFieldValue("end", target.value)}
+                    value={formik.values.endDateTime}
+                    onChange={({ target }) => formik.setFieldValue("endDateTime", target.value)}
                   />
                 </Grid>
                 <Grid item md={12} xs={12}>

@@ -26,8 +26,18 @@ const SignIn = ({ dispatch, isLoading }) => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
-      password: Yup.string().max(255).required("Password is required"),
+      email: Yup.string().email("must provide a valid email").max(255).required("email is required to sign in"),
+      password: Yup.string()
+        .max(255)
+        .test("password-check", "password is required to sign in", (password) =>
+          password ? password.length !== 0 : false
+        )
+        .test("password-check", "password must be at least 5 characters", (password) =>
+          password ? password.length >= 5 : false
+        )
+        .test("empty-check", "password can't contain spaces", (password) =>
+          password ? !password.includes(" ") : false
+        ),
     }),
     onSubmit: (formValues, { setErrors }) => {
       dispatch(access(formValues, () => router.push("/"), "login", setErrors));

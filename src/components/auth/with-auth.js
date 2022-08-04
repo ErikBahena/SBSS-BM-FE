@@ -15,7 +15,7 @@ const withAuth = (Component, noLayout) => {
 
     if (!token) return <Login />;
 
-    if (!user) dispatch(reloadByToken(token));
+    if (!user) dispatch(reloadByToken());
 
     if (user) {
       if (noLayout) return <Component />;

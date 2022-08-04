@@ -19,14 +19,14 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        user: { ...action.payload },
+        user: { ...action.payload.user },
         isLoading: false,
         errorMessage: "",
       };
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
-        user: { ...action.payload },
+        user: { ...action.payload.user },
         isLoading: false,
         errorMessage: "",
       };
@@ -50,7 +50,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: action.payload,
+        errorMessage: action.payload.message,
       };
     default:
       return state;

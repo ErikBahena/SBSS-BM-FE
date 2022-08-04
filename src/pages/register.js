@@ -11,17 +11,14 @@ import * as Yup from "yup";
 
 import {
   Box,
-  Button,
   Checkbox,
   Container,
   FormHelperText,
-  IconButton,
   Link,
   TextField,
   Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TermsOfService from "src/components/register/terms-of-service";
 
 const Register = ({ dispatch, isLoading }) => {
@@ -37,11 +34,32 @@ const Register = ({ dispatch, isLoading }) => {
       policy: false,
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("must be a valid email").max(255).required("email is required"),
-      first_name: Yup.string().max(255).required("can't be empty"),
-      last_name: Yup.string().max(255).required("can't be empty"),
-      password: Yup.string().max(255).required("can't be empty"),
-      policy: Yup.boolean().oneOf([true], "this field must be checked"),
+      email: Yup.string()
+        .email("must provide a valid email")
+        .max(255)
+        .required("email is required to register"),
+      first_name: Yup.string()
+        .max(255)
+        .test("empty-check", "first name is required to register", (first_name) =>
+          first_name ? first_name.trim().length !== 0 : false
+        ),
+      last_name: Yup.string()
+        .max(255)
+        .test("empty-check", "last name is required to register", (last_name) =>
+          last_name ? last_name.trim().length !== 0 : false
+        ),
+      password: Yup.string()
+        .max(255)
+        .test("password-check", "password is required to register", (password) =>
+          password ? password.length !== 0 : false
+        )
+        .test("password-check", "password must be at least 5 characters", (password) =>
+          password ? password.length >= 5 : false
+        )
+        .test("empty-check", "password can't contain spaces", (password) =>
+          password ? !password.includes(" ") : false
+        ),
+      policy: Yup.boolean().oneOf([true], "must be checked to register"),
     }),
     onSubmit: (formValues, { setErrors }) => {
       dispatch(access(formValues, () => router.push("/"), "register", setErrors));
@@ -150,7 +168,9 @@ const Register = ({ dispatch, isLoading }) => {
               <TermsOfService open={tosOpen} setOpen={setTosOpen} />
             </Box>
             {Boolean(formik.touched.policy && formik.errors.policy) && (
-              <FormHelperText error>{formik.errors.policy}</FormHelperText>
+              <FormHelperText error sx={{ ml: 1.75 }}>
+                {formik.errors.policy}
+              </FormHelperText>
             )}
             <Box sx={{ py: 2 }}>
               <LoadingButton

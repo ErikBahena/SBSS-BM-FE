@@ -1,6 +1,5 @@
 import axios from "axios";
-import { axiosWithAuth, decodeJWT } from "../utils";
-import { BACKEND_URL } from "src/config";
+import { axiosWithAuth } from "../utils";
 
 export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
@@ -14,33 +13,31 @@ export const access = (userInfo, successCallback, type, setErrors) => {
     dispatch(fetchStart());
 
     axios
-      .post(`api/auth/${type}`, userInfo)
+      .post(`/api/auth/${type}/`, userInfo)
       .then((res) => {
-
-        console.log(res, "res");
+        console.log(res.data, "HERE");
         dispatch(loginSuccess(res.data));
 
         if (successCallback) successCallback();
       })
       .catch((err) => {
-        const type = err.response.data.type;
+        const name = err.response.data.name;
         const message = err.response.data.message;
 
-        if (setErrors) setErrors({ [type]: message });
+        if (setErrors) setErrors({ [name]: message });
         dispatch(fetchError());
       });
   };
 };
 
-export const reloadByToken = (token) => {
+export const reloadByToken = (email) => {
   return async (dispatch) => {
-    const decodedToken = decodeJWT(token);
-
     axiosWithAuth()
-      .post("/auth/reload", decodedToken)
+      .post("/auth/refresh-login")
       .then((res) => {
         dispatch(loginSuccess(res.data));
-      }).catch(err => console.log(err))
+      })
+      .catch((err) => console.log(err));
   };
 };
 

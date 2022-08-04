@@ -2,8 +2,6 @@ import axios from "axios";
 
 import jwt_decode from "jwt-decode";
 
-import { BACKEND_URL } from "src/config";
-
 export const axiosWithAuth = () => {
   const token = localStorage.getItem("token");
 
@@ -11,7 +9,7 @@ export const axiosWithAuth = () => {
     headers: {
       authorization: token,
     },
-    baseURL: BACKEND_URL,
+    baseURL: "/api/",
   });
 };
 

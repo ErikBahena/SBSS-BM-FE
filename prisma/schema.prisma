@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model client {
+  client_id      Int              @id @default(autoincrement())
+  first_name     String           @db.VarChar(255)
+  last_name      String           @db.VarChar(255)
+  email          String           @unique(map: "client_email_unique") @db.VarChar(255)
+  phone          String           @db.VarChar(255)
+  photo_url      String?          @db.VarChar(255)
+  user_id        Int
+  created_at     DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime         @default(now()) @db.Timestamptz(6)
+  user           user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "client_user_id_foreign")
+  client_address client_address[]
+  job            job[]
+}
+
+model client_address {
+  client_address_id Int    @id @default(autoincrement())
+  street            String @db.VarChar(100)
+  city              String @db.VarChar(100)
+  postal_code       String @db.VarChar(10)
+  state             String @db.VarChar(30)
+  country           String @db.VarChar(50)
+  client_id         Int
+  client            client @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction, map: "client_address_client_id_foreign")
+}
+
+model employee {
+  employee_id      Int                @id @default(autoincrement())
+  first_name       String             @db.VarChar(255)
+  last_name        String             @db.VarChar(255)
+  email            String             @unique(map: "employee_email_unique") @db.VarChar(255)
+  phone            String             @db.VarChar(255)
+  photo_url        String?            @db.VarChar(255)
+  user_id          Int
+  created_at       DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime           @default(now()) @db.Timestamptz(6)
+  user             user               @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "employee_user_id_foreign")
+  employee_address employee_address[]
+  job_employee     job_employee[]
+}
+
+model employee_address {
+  employee_address_id Int      @id @default(autoincrement())
+  street              String   @db.VarChar(100)
+  city                String   @db.VarChar(100)
+  postal_code         String   @db.VarChar(10)
+  state               String   @db.VarChar(30)
+  country             String   @db.VarChar(50)
+  employee_id         Int
+  employee            employee @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction, map: "employee_address_employee_id_foreign")
+}
+
+model job {
+  job_id       Int            @id @default(autoincrement())
+  title        String         @db.VarChar(100)
+  description  String         @db.VarChar(200)
+  created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime       @default(now()) @db.Timestamptz(6)
+  user_id      Int
+  client_id    Int
+  client       client         @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction, map: "job_client_id_foreign")
+  user         user           @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "job_user_id_foreign")
+  job_employee job_employee[]
+}
+
+model job_employee {
+  job_employee_id    Int                  @id @default(autoincrement())
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime             @default(now()) @db.Timestamptz(6)
+  job_id             Int
+  employee_id        Int
+  employee           employee             @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction, map: "job_employee_employee_id_foreign")
+  job                job                  @relation(fields: [job_id], references: [job_id], onDelete: Cascade, onUpdate: NoAction, map: "job_employee_job_id_foreign")
+  job_employee_labor job_employee_labor[]
+}
+
+model job_employee_labor {
+  job_employee_labor_id Int          @id @default(autoincrement())
+  created_at            DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime     @default(now()) @db.Timestamptz(6)
+  startDateTime         String       @db.VarChar(255)
+  endDateTime           String       @db.VarChar(255)
+  description           String       @db.VarChar(255)
+  job_employee_id       Int
+  job_employee          job_employee @relation(fields: [job_employee_id], references: [job_employee_id], onDelete: Cascade, onUpdate: Restrict, map: "job_employee_labor_job_employee_id_foreign")
+}
+
+model user {
+  user_id      Int            @id @default(autoincrement())
+  first_name   String         @db.VarChar(255)
+  last_name    String         @db.VarChar(255)
+  email        String         @unique(map: "user_email_unique") @db.VarChar(255)
+  password     String         @db.VarChar(200)
+  policy       Boolean
+  photo_url    String?        @db.VarChar(255)
+  phone        String?        @db.VarChar(255)
+  created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime       @default(now()) @db.Timestamptz(6)
+  client       client[]
+  employee     employee[]
+  job          job[]
+  user_address user_address[]
+}
+
+model user_address {
+  user_address_id Int    @id @default(autoincrement())
+  street          String @db.VarChar(100)
+  city            String @db.VarChar(100)
+  postal_code     String @db.VarChar(10)
+  state           String @db.VarChar(30)
+  country         String @db.VarChar(50)
+  user_id         Int
+  user            user   @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "user_address_user_id_foreign")
+}

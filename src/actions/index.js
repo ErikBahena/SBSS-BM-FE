@@ -14,8 +14,10 @@ export const access = (userInfo, successCallback, type, setErrors) => {
     dispatch(fetchStart());
 
     axios
-      .post(`${BACKEND_URL}/auth/${type}`, userInfo)
+      .post(`api/auth/${type}`, userInfo)
       .then((res) => {
+
+        console.log(res, "res");
         dispatch(loginSuccess(res.data));
 
         if (successCallback) successCallback();

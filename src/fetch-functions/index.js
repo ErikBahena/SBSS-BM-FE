@@ -1,4 +1,7 @@
+// import { PrismaClient } from '@prisma/client'
 import { axiosWithAuth } from "../utils";
+
+// export const prisma = new PrismaClient()
 
 // user crud functions
 export const updateUserPassword = async ({ user_id, email, newPassword, password }) => {

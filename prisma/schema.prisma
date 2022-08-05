@@ -3,109 +3,109 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DEVELOPMENT_DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model client {
-  client_id      Int              @id @default(autoincrement())
+  client_id      String           @id @default(uuid())
   first_name     String           @db.VarChar(255)
   last_name      String           @db.VarChar(255)
-  email          String           @unique(map: "client_email_unique") @db.VarChar(255)
+  email          String           @unique()
   phone          String           @db.VarChar(255)
   photo_url      String?          @db.VarChar(255)
-  user_id        Int
-  created_at     DateTime         @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime         @default(now()) @db.Timestamptz(6)
-  user           user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "client_user_id_foreign")
+  user_id        String
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  user           user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   client_address client_address[]
   job            job[]
 }
 
 model client_address {
-  client_address_id Int    @id @default(autoincrement())
+  client_address_id String @id @default(uuid())
   street            String @db.VarChar(100)
   city              String @db.VarChar(100)
   postal_code       String @db.VarChar(10)
   state             String @db.VarChar(30)
   country           String @db.VarChar(50)
-  client_id         Int
-  client            client @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction, map: "client_address_client_id_foreign")
+  client_id         String
+  client            client @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model employee {
-  employee_id      Int                @id @default(autoincrement())
+  employee_id      String             @id @default(uuid())
   first_name       String             @db.VarChar(255)
   last_name        String             @db.VarChar(255)
-  email            String             @unique(map: "employee_email_unique") @db.VarChar(255)
+  email            String             @unique()
   phone            String             @db.VarChar(255)
   photo_url        String?            @db.VarChar(255)
-  user_id          Int
-  created_at       DateTime           @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime           @default(now()) @db.Timestamptz(6)
-  user             user               @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "employee_user_id_foreign")
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  user_id          String
+  user             user               @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   employee_address employee_address[]
   job_employee     job_employee[]
 }
 
 model employee_address {
-  employee_address_id Int      @id @default(autoincrement())
+  employee_address_id String   @id @default(uuid())
   street              String   @db.VarChar(100)
   city                String   @db.VarChar(100)
   postal_code         String   @db.VarChar(10)
   state               String   @db.VarChar(30)
   country             String   @db.VarChar(50)
-  employee_id         Int
-  employee            employee @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction, map: "employee_address_employee_id_foreign")
+  employee_id         String
+  employee            employee @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model job {
-  job_id       Int            @id @default(autoincrement())
+  job_id       String         @id @default(uuid())
   title        String         @db.VarChar(100)
   description  String         @db.VarChar(200)
-  created_at   DateTime       @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime       @default(now()) @db.Timestamptz(6)
-  user_id      Int
-  client_id    Int
-  client       client         @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction, map: "job_client_id_foreign")
-  user         user           @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "job_user_id_foreign")
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  user_id      String
+  client_id    String
+  client       client         @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction)
+  user         user           @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
   job_employee job_employee[]
 }
 
 model job_employee {
-  job_employee_id    Int                  @id @default(autoincrement())
-  created_at         DateTime             @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime             @default(now()) @db.Timestamptz(6)
-  job_id             Int
-  employee_id        Int
-  employee           employee             @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction, map: "job_employee_employee_id_foreign")
-  job                job                  @relation(fields: [job_id], references: [job_id], onDelete: Cascade, onUpdate: NoAction, map: "job_employee_job_id_foreign")
+  job_employee_id    String               @id @default(uuid())
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  job_id             String
+  employee_id        String
+  employee           employee             @relation(fields: [employee_id], references: [employee_id], onDelete: Cascade, onUpdate: NoAction)
+  job                job                  @relation(fields: [job_id], references: [job_id], onDelete: Cascade, onUpdate: NoAction)
   job_employee_labor job_employee_labor[]
 }
 
 model job_employee_labor {
-  job_employee_labor_id Int          @id @default(autoincrement())
-  created_at            DateTime     @default(now()) @db.Timestamptz(6)
-  updated_at            DateTime     @default(now()) @db.Timestamptz(6)
+  job_employee_labor_id String       @id @default(uuid())
+  created_at            DateTime     @default(now())
+  updated_at            DateTime     @updatedAt
   startDateTime         String       @db.VarChar(255)
   endDateTime           String       @db.VarChar(255)
   description           String       @db.VarChar(255)
-  job_employee_id       Int
-  job_employee          job_employee @relation(fields: [job_employee_id], references: [job_employee_id], onDelete: Cascade, onUpdate: Restrict, map: "job_employee_labor_job_employee_id_foreign")
+  job_employee_id       String
+  job_employee          job_employee @relation(fields: [job_employee_id], references: [job_employee_id], onDelete: Cascade, onUpdate: Restrict)
 }
 
 model user {
-  user_id      Int            @id @default(autoincrement())
+  user_id      String         @id @default(uuid())
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
   first_name   String         @db.VarChar(255)
   last_name    String         @db.VarChar(255)
-  email        String         @unique(map: "user_email_unique") @db.VarChar(255)
+  email        String         @unique()
   password     String         @db.VarChar(200)
   policy       Boolean
   photo_url    String?        @db.VarChar(255)
   phone        String?        @db.VarChar(255)
-  created_at   DateTime       @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime       @default(now()) @db.Timestamptz(6)
   client       client[]
   employee     employee[]
   job          job[]
@@ -113,12 +113,12 @@ model user {
 }
 
 model user_address {
-  user_address_id Int    @id @default(autoincrement())
+  user_address_id String @id @default(uuid())
   street          String @db.VarChar(100)
   city            String @db.VarChar(100)
   postal_code     String @db.VarChar(10)
   state           String @db.VarChar(30)
   country         String @db.VarChar(50)
-  user_id         Int
-  user            user   @relation(fields: [user_id], references: [user_id], onUpdate: NoAction, map: "user_address_user_id_foreign")
+  user_id         String
+  user            user   @relation(fields: [user_id], references: [user_id])
 }

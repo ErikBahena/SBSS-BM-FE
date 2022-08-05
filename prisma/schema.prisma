@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -69,7 +70,7 @@ model job {
   user_id      String
   client_id    String
   client       client         @relation(fields: [client_id], references: [client_id], onDelete: Cascade, onUpdate: NoAction)
-  user         user           @relation(fields: [user_id], references: [user_id], onUpdate: NoAction)
+  user         user           @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   job_employee job_employee[]
 }
 
@@ -120,5 +121,5 @@ model user_address {
   state           String @db.VarChar(30)
   country         String @db.VarChar(50)
   user_id         String
-  user            user   @relation(fields: [user_id], references: [user_id])
+  user            user   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }

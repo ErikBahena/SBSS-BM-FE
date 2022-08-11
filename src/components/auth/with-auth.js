@@ -10,6 +10,8 @@ import Login from "../../pages/login.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// @TODO: Move the toast container to a ui based component not a logic based component
+
 const withAuth = (Component, noLayout) => {
   const Auth = () => {
     const dispatch = useDispatch();

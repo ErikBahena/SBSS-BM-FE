@@ -1,5 +1,7 @@
 const { JWT_SECRET } = process.env;
 
+// @TODO restricted is a middleware, resolveWithError is a helper function, separate them
+
 const resolveWithError = (res, err) => {
   if (!err.status || !err.message) throw new Error("Invalid Error Object");
 

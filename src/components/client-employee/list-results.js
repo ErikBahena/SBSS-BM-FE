@@ -29,6 +29,7 @@ import { EditOutlined } from "@mui/icons-material";
 import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
+import { toast } from "react-toastify";
 
 const TableCellWithStyle = ({ children, sx: propSx }) => {
   return <TableCell sx={{ p: "0 10px", width: "max-content", ...propSx }}>{children}</TableCell>;
@@ -36,7 +37,11 @@ const TableCellWithStyle = ({ children, sx: propSx }) => {
 
 export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainResource }) => {
   const { mutate: deleteResourceMutate } = useMutation(deleteResourceFunc, {
-    onSuccess: () => refetchMainResource(),
+    onSuccess: () => {
+      refetchMainResource();
+
+      toast.success(`${type} deleted successfully`);
+    },
     onError: (err) => console.log(err),
   });
 
@@ -64,7 +69,7 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                     <TableCell>Email</TableCell>
                     <TableCell>Location</TableCell>
                     <TableCell>Phone</TableCell>
-                    <TableCell>Registration Date</TableCell>
+                    <TableCell>Created</TableCell>
                     <TableCell>Edit</TableCell>
                     <TableCell>Delete</TableCell>
                   </TableRow>
@@ -76,9 +81,7 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                       return (
                         <React.Fragment key={uuid()}>
                           <TableRow>
-                            <TableCellWithStyle sx={{ fontWeight: "bold" }}>
-                              Name:
-                            </TableCellWithStyle>
+                            <TableCellWithStyle>Name:</TableCellWithStyle>
                             <TableCellWithStyle sx={{ fontWeight: "bold" }}>
                               {el.first_name} {el.last_name}
                             </TableCellWithStyle>
@@ -125,40 +128,11 @@ export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainRe
                           </TableRow>
 
                           <TableRow>
-                            <TableCellWithStyle>Registered:</TableCellWithStyle>
+                            <TableCellWithStyle>Created:</TableCellWithStyle>
                             <TableCellWithStyle>
                               {format(new Date(el.created_at), "MM/dd/yyyy")}
                             </TableCellWithStyle>
                           </TableRow>
-
-                          {/* <TableRow>
-                            <TableCellWithStyle>Edit:</TableCellWithStyle>
-                            <TableCellWithStyle>
-                              <IconButton>
-                                <EditOutlined />
-                              </IconButton>
-                            </TableCellWithStyle>
-                          </TableRow> */}
-
-                          {/* <TableRow>
-                            <TableCellWithStyle>Delete:</TableCellWithStyle>
-                            <TableCellWithStyle>
-                              <ConfirmDeletionDialog
-                                title={`Delete ${capitalizedType}`}
-                                onConfirm={() => deleteResourceMutate(el[`${type}_id`])}
-                                tooltipTitle={`Delete ${capitalizedType}`}
-                              >
-                                Are you sure you want to delete your {type}:{" "}
-                                <b>
-                                  {el.first_name} {el.last_name}
-                                </b>
-                                <br />
-                                This can&apos;t be undone and is not recommended. All information
-                                regarding this {type} will be lost forever including any relations
-                                in the jobs tab
-                              </ConfirmDeletionDialog>
-                            </TableCellWithStyle>
-                          </TableRow> */}
                         </React.Fragment>
                       );
 

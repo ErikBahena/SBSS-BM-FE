@@ -14,7 +14,7 @@ export default async (req, res, next) => {
   });
 
   if (user) {
-    resolveWithError(res, {
+    return resolveWithError(res, {
       status: 400,
       message: "email already in use",
       name: "email",

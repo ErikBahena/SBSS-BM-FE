@@ -12,7 +12,7 @@ export default async (req, res) => {
   const token = req.headers.authorization;
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, JWT_SECRET);
 
     if (decodedToken) {
       const userFromTokenDecode = {
@@ -31,7 +31,7 @@ export default async (req, res) => {
       });
     }
   } catch (err) {
-    resolveWithError(res, {
+    return resolveWithError(res, {
       status: 401,
       message: err.message,
       name: "token",

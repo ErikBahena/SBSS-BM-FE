@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { phoneRegExp } from "src/utils/regexExpressions";
 import { states } from "../../__mocks__/states";
 
+import { toast } from "react-toastify";
+
 import * as Yup from "yup";
 
 import {
@@ -33,7 +35,10 @@ const AddResourcePopover = ({
   const { mutate, isLoading } = useMutation(addResourceFunc, {
     onSuccess: () => {
       refetch();
+
       setAnchorEl(null);
+
+      toast.success(`${type} added successfully`);
     },
     onError: () => {
       alert("there was an error");
@@ -66,9 +71,7 @@ const AddResourcePopover = ({
       state: Yup.mixed().notOneOf(["default"]).required("you must select a state "),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      formValues.user_id = userId;
-
-      mutate(formValues);
+      mutate({ values: formValues, user_id: userId });
     },
   });
 

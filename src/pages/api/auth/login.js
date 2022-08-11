@@ -21,7 +21,7 @@ export default async (req, res) => {
   });
 
   if (!userFromDb) {
-    resolveWithError(res, {
+    return resolveWithError(res, {
       status: 400,
       message: "email not in use",
       name: "email",
@@ -41,7 +41,7 @@ export default async (req, res) => {
   }
 
   if (!passwordsMatch) {
-    resolveWithError(res, {
+    return resolveWithError(res, {
       status: 401,
       message: "invalid password",
       name: "password",

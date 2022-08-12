@@ -19,7 +19,7 @@ export const getUserClients = async (user_id) => {
 export const addClient = async ({ values, user_id }) => {
   const { data } = await axiosWithAuth().post(`/client/add/${user_id}`, values);
 
-  return data;
+  return data.updatedResource;
 };
 
 export const deleteClientQFN = async (client_id) => {

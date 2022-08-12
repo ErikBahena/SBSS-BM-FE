@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { connect } from "react-redux";
 
 import { phoneRegExp } from "src/utils/regexExpressions";
@@ -27,18 +27,19 @@ const AddResourcePopover = ({
   open,
   setAnchorEl,
   userId,
-  refetch,
   addResourceFunc,
   type,
   title,
 }) => {
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading } = useMutation(addResourceFunc, {
-    onSuccess: () => {
-      refetch();
+    onSuccess: (updatedResource) => {
+      toast.success(`${type} added successfully`);
+
+      queryClient.setQueryData(`${type}s`, updatedResource);
 
       setAnchorEl(null);
-
-      toast.success(`${type} added successfully`);
     },
     onError: () => {
       alert("there was an error");

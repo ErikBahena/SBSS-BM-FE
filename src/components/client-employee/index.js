@@ -62,7 +62,6 @@ const Root = ({
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   setAnchorEl={setAnchorEl}
-                  refetch={refetchMainResource}
                   addResourceFunc={addResourceFunc}
                   type={type}
                   title={popoverTitle}

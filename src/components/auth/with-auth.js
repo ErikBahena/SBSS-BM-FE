@@ -7,11 +7,6 @@ import { DashboardLayout } from "../dashboard-layout";
 
 import Login from "../../pages/login.js";
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-// @TODO: Move the toast container to a ui based component not a logic based component
-
 const withAuth = (Component, noLayout) => {
   const Auth = () => {
     const dispatch = useDispatch();
@@ -23,38 +18,11 @@ const withAuth = (Component, noLayout) => {
     if (!user) dispatch(reloadByToken());
 
     if (user) {
-      if (noLayout)
-        return (
-          <>
-            <Component />
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3500}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </>
-        );
+      if (noLayout) return <Component />;
       else
         return (
           <DashboardLayout>
             <Component />
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3500}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
           </DashboardLayout>
         );
     } else return <Login />;

@@ -26,7 +26,10 @@ const SignIn = ({ dispatch, isLoading }) => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("must provide a valid email").max(255).required("email is required to sign in"),
+      email: Yup.string()
+        .email("must provide a valid email")
+        .max(255)
+        .required("email is required to sign in"),
       password: Yup.string()
         .max(255)
         .test("password-check", "password is required to sign in", (password) =>
@@ -40,14 +43,14 @@ const SignIn = ({ dispatch, isLoading }) => {
         ),
     }),
     onSubmit: (formValues, { setErrors }) => {
-      dispatch(access(formValues, () => router.push("/"), "login", setErrors));
+      dispatch(access(formValues, () => router.push("/"), "sign-in", setErrors));
     },
   });
 
   return (
     <>
       <Head>
-        <title>SBSS | Log In</title>
+        <title>SBSS | Sign In</title>
       </Head>
       <Box
         component="main"
@@ -164,7 +167,7 @@ const SignIn = ({ dispatch, isLoading }) => {
                 underline="hover"
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(access(guestCredentials, () => router.push("/"), "login"));
+                  dispatch(access(guestCredentials, () => router.push("/"), "sign-in"));
                 }}
                 sx={{
                   cursor: "pointer",

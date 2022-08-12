@@ -25,7 +25,7 @@ export default async (req, res) => {
       return res.json({
         user: { ...userFromTokenDecode },
         token: tokenBuilder(userFromTokenDecode),
-        message: "login successful",
+        message: "sign in successful",
         success: true,
         status: 200,
       });

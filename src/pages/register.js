@@ -186,7 +186,7 @@ const Register = ({ dispatch, isLoading }) => {
             </Box>
             <Typography color="textSecondary" variant="body2">
               Have an account?{" "}
-              <NextLink href="/login" passHref>
+              <NextLink href="/signin" passHref>
                 <Link variant="subtitle2" underline="hover">
                   Sign In
                 </Link>

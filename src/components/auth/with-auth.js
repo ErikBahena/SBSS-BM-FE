@@ -5,7 +5,7 @@ import { reloadByToken } from "src/actions";
 
 import { DashboardLayout } from "../dashboard-layout";
 
-import Login from "../../pages/login.js";
+import SignIn from "../../pages/signin.js";
 
 const withAuth = (Component, noLayout) => {
   const Auth = () => {
@@ -13,7 +13,7 @@ const withAuth = (Component, noLayout) => {
     const user = useSelector((state) => state.user);
     const token = storage.getToken();
 
-    if (!token) return <Login />;
+    if (!token) return <SignIn />;
 
     if (!user) dispatch(reloadByToken());
 
@@ -25,7 +25,7 @@ const withAuth = (Component, noLayout) => {
             <Component />
           </DashboardLayout>
         );
-    } else return <Login />;
+    } else return <SignIn />;
   };
 
   return Auth;

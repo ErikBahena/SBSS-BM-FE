@@ -12,7 +12,7 @@
 - [Users Page](https://material-kit-react.devias.io/customers)
 - [Products Page](https://material-kit-react.devias.io/products)
 - [Register Page](https://material-kit-react.devias.io/register)
-- [Login Page](https://material-kit-react.devias.io/login)
+- [Sign In Page](https://material-kit-react.devias.io/login)
 - [Account Page](https://material-kit-react.devias.io/account)
 - [Settings Page](https://material-kit-react.devias.io/settings)
 
@@ -72,7 +72,7 @@ material-kit-react
 		├── account.js
 		├── customers.js
 		├── index.js
-		├── login.js
+		├── signin.js
 		├── products.js
 		├── register.js
 		└── settings.js

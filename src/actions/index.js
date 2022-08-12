@@ -5,7 +5,7 @@ export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const SET_ERROR = "SET_ERROR";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 
 export const access = (userInfo, successCallback, type, setErrors) => {
@@ -15,8 +15,7 @@ export const access = (userInfo, successCallback, type, setErrors) => {
     axios
       .post(`/api/auth/${type}/`, userInfo)
       .then((res) => {
-        console.log(res.data, "HERE");
-        dispatch(loginSuccess(res.data));
+        dispatch(signInSuccess(res.data));
 
         if (successCallback) successCallback();
       })
@@ -33,9 +32,9 @@ export const access = (userInfo, successCallback, type, setErrors) => {
 export const reloadByToken = (email) => {
   return async (dispatch) => {
     axiosWithAuth()
-      .post("/auth/refresh-login")
+      .post("/auth/refresh-sign-in")
       .then((res) => {
-        dispatch(loginSuccess(res.data));
+        dispatch(signInSuccess(res.data));
       })
       .catch((err) => console.log(err));
   };
@@ -60,9 +59,9 @@ export const fetchStart = () => {
   };
 };
 
-export const loginSuccess = (userInfo) => {
+export const signInSuccess = (userInfo) => {
   return {
-    type: LOGIN_SUCCESS,
+    type: SIGN_IN_SUCCESS,
     payload: userInfo,
   };
 };

@@ -7,7 +7,7 @@ const SignOut = () => {
 
   useEffect(() => {
     storage.clearToken();
-    router.push("/login");
+    router.push("/signin");
   }, []);
 
   return null;

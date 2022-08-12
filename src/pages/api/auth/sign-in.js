@@ -34,7 +34,7 @@ export default async (req, res) => {
     return res.json({
       user: { ...userFromDb, password: undefined },
       token: tokenBuilder(userFromDb),
-      message: "login successful",
+      message: "sign in successful",
       success: true,
       status: 200,
     });

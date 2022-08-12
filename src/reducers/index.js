@@ -3,7 +3,7 @@ import {
   FETCH_ERROR,
   FETCH_SUCCESS,
   SET_ERROR,
-  LOGIN_SUCCESS,
+  SIGN_IN_SUCCESS,
   UPDATE_USER_SUCCESS,
 } from "../actions";
 
@@ -14,7 +14,7 @@ export const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+    case SIGN_IN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
 
       return {

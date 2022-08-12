@@ -23,7 +23,9 @@ export const addClient = async ({ values, user_id }) => {
 };
 
 export const deleteClientQFN = async (client_id) => {
-  return await axiosWithAuth().delete(`/client/delete/${client_id}`);
+  const { data } = await axiosWithAuth().delete(`/client/delete/${client_id}`);
+
+  return data.updatedResource;
 };
 
 // user employee crud functions

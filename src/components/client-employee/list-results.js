@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import {
-  Avatar,
-  Box,
   Card,
   Table,
   TableBody,
@@ -19,28 +17,28 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  Grid,
   useMediaQuery,
-  Divider,
 } from "@mui/material";
 
+import ConfirmDeletionDialog from "../confirm-deletion-dialog";
 import { EditOutlined } from "@mui/icons-material";
 
-import ConfirmDeletionDialog from "../confirm-deletion-dialog";
+import { toast } from "react-toastify";
 
 import { capitalizeFirstLetter } from "src/utils/letter-utils";
-import { toast } from "react-toastify";
 
 const TableCellWithStyle = ({ children, sx: propSx }) => {
   return <TableCell sx={{ p: "0 10px", width: "max-content", ...propSx }}>{children}</TableCell>;
 };
 
-export const ListResults = ({ data = [], type, deleteResourceFunc, refetchMainResource }) => {
-  const { mutate: deleteResourceMutate } = useMutation(deleteResourceFunc, {
-    onSuccess: () => {
-      refetchMainResource();
+export const ListResults = ({ data = [], type, deleteResourceFunc }) => {
+  const queryClient = useQueryClient();
 
+  const { mutate: deleteResourceMutate } = useMutation(deleteResourceFunc, {
+    onSuccess: (updatedResource) => {
       toast.success(`${type} deleted successfully`);
+
+      queryClient.setQueryData(`${type}s`, updatedResource);
     },
     onError: (err) => console.log(err),
   });

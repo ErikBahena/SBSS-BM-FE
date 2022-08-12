@@ -26,11 +26,7 @@ const Root = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const {
-    status,
-    data = [],
-    refetch: refetchMainResource,
-  } = useQuery(`${type}s`, () => mainResourceFunc(userId));
+  const { status, data = [] } = useQuery(`${type}s`, () => mainResourceFunc(userId));
 
   const [orderedData, handleSearch, searchTerm] = useSearch("", data, clientSearchKeys);
 
@@ -78,7 +74,6 @@ const Root = ({
                   data={orderedData}
                   type={type}
                   deleteResourceFunc={deleteResourceFunc}
-                  refetchMainResource={refetchMainResource}
                 />
               </Box>
             </>
